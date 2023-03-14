@@ -1,7 +1,7 @@
 name: app_base
 description: Base application interfaces
 version: 0.0.1
-homepage:
+publish_to: 'none'
 
 environment:
   sdk: '>=2.19.4 <3.0.0'
