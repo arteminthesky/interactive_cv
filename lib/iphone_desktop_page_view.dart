@@ -101,6 +101,7 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
             }
           },
         ),
+
         _DynamicBlur(
           controller: _desktopsController,
           desktopsCount: desktops.length,

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:iphone_desktop/drawers/search_drawer.dart';
+import 'package:iphone_desktop/widgets/fidgets/fidgets.dart';
 import 'package:iphone_desktop/widgets/ios_widget.dart';
 
 enum TopDrawerAnimationState { end, begin, idle, active }
@@ -149,15 +150,10 @@ class _LeftDrawerPageBody extends StatelessWidget {
       child: CustomScrollView(
         physics: AlwaysScrollableScrollPhysics(),
         slivers: [
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.all(15.0),
-              child: AspectRatio(
-                aspectRatio: 2,
-                child: IosWidget(
-                  child: _WeatherWidget(),
-                ),
-              ),
+          SliverPadding(
+            padding: EdgeInsets.all(10.0),
+            sliver: SliverToBoxAdapter(
+              child: WeatherFidget(),
             ),
           ),
         ],
