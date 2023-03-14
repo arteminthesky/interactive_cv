@@ -10,7 +10,7 @@ final apps = [
   App('', 'Files'),
   App('', 'Settings'),
   App('', 'Weather'),
-  App('', 'Camera'),
+  App('assets/apps/camera.png', 'Camera'),
   App('', 'Clock'),
   App('', 'Freeform'),
   App('', 'Calculator'),
@@ -33,4 +33,10 @@ final desktops = [
   Desktop(apps.take(5).toList()),
   Desktop(apps.sublist(5, 10)),
   Desktop(apps.sublist(10, 23)),
+];
+
+final siriSuggestions = [
+  App('assets/apps/camera.png', 'Camera'),
+  App('assets/apps/youtube.png', 'YouTube'),
+  App('assets/apps/camera.png', 'Camera'),
 ];

@@ -1,8 +1,8 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:iphone_desktop/drawers/search_drawer.dart';
 import 'package:iphone_desktop/widgets/ios_widget.dart';
-import 'package:iphone_desktop/widgets/siri_suggestions.dart';
 
 enum TopDrawerAnimationState { end, begin, idle, active }
 
@@ -28,27 +28,6 @@ class TopDrawerController extends ValueNotifier<TopDrawerState> {
   TopDrawerController(super.value);
 }
 
-class LeftDrawerControllerScope extends InheritedWidget {
-  const LeftDrawerControllerScope({
-    super.key,
-    required this.state,
-    required super.child,
-  });
-
-  static _LeftDrawerControllerState of(BuildContext context) {
-    return context
-        .dependOnInheritedWidgetOfExactType<LeftDrawerControllerScope>()!
-        .state;
-  }
-
-  final _LeftDrawerControllerState state;
-
-  @override
-  bool updateShouldNotify(LeftDrawerControllerScope oldWidget) {
-    return state != oldWidget.state;
-  }
-}
-
 class _LeftDrawerController extends StatefulWidget {
   const _LeftDrawerController({
     Key? key,
@@ -62,18 +41,41 @@ class _LeftDrawerController extends StatefulWidget {
 }
 
 class _LeftDrawerControllerState extends State<_LeftDrawerController> {
-  final TopDrawerController controller = TopDrawerController(
+  final TopDrawerController topDrawerController = TopDrawerController(
     TopDrawerState(Offset.zero, null),
   );
 
-  late final _topDrawerEntry = OverlayEntry(builder: (context) {
-    return SiriSuggestions(
-      controller: controller,
+  final ScrollController _scrollController = ScrollController();
+  late final _topDrawerEntry = OverlayEntry(builder: _buildEntry);
+
+  Widget _buildEntry(context) {
+    return SearchDrawer(
+      entry: _topDrawerEntry,
+      controller: topDrawerController,
+      slivers: const [
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: EdgeInsets.all(15.0),
+            child: AspectRatio(
+              aspectRatio: 2,
+              child: IosWidget(
+                child: _WeatherWidget(),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
-  });
+  }
 
   Offset _gestureStart = Offset.zero;
   bool opened = false;
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,35 +85,39 @@ class _LeftDrawerControllerState extends State<_LeftDrawerController> {
       },
       onPointerMove: (move) {
         var delta = move.localPosition - _gestureStart;
+
         if (delta.dy >= 0 &&
-            controller.value.animationState != TopDrawerAnimationState.idle) {
-          _updateBeginAnimation(delta);
+            topDrawerController.value.animationState != TopDrawerAnimationState.idle &&
+            _scrollController.offset < 0) {
           _showTopDrawer();
+          _updateBeginAnimation(delta);
         }
       },
       onPointerUp: (up) {
-        _idleAnimation();
+        if (topDrawerController.value.animationState != null) {
+          _idleAnimation();
+        }
       },
-      child: LeftDrawerControllerScope(
-        state: this,
+      child: PrimaryScrollController(
+        controller: _scrollController,
         child: widget.child,
       ),
     );
   }
 
   void _updateBeginAnimation(Offset offset) {
-    controller.value = TopDrawerState(offset, TopDrawerAnimationState.begin);
+    topDrawerController.value = TopDrawerState(offset, TopDrawerAnimationState.begin);
   }
 
   void _updateAnimation() {}
 
   void _idleAnimation() {
-    controller.value =
+    topDrawerController.value =
         TopDrawerState(Offset.zero, TopDrawerAnimationState.idle);
   }
 
   void _showTopDrawer() {
-    if (!opened) {
+    if (topDrawerController.value.animationState == null) {
       opened = true;
       Overlay.of(context).insert(_topDrawerEntry);
     }
@@ -134,23 +140,15 @@ class LeftDrawerPage extends StatelessWidget {
   }
 }
 
-class _LeftDrawerPageBody extends StatefulWidget {
+class _LeftDrawerPageBody extends StatelessWidget {
   const _LeftDrawerPageBody({Key? key}) : super(key: key);
 
   @override
-  State<_LeftDrawerPageBody> createState() => _LeftDrawerPageBodyState();
-}
-
-class _LeftDrawerPageBodyState extends State<_LeftDrawerPageBody> {
-  final ScrollController _controller = ScrollController();
-
-  @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return const SafeArea(
       child: CustomScrollView(
-        controller: _controller,
-        physics: const AlwaysScrollableScrollPhysics(),
-        slivers: const [
+        physics: AlwaysScrollableScrollPhysics(),
+        slivers: [
           SliverToBoxAdapter(
             child: Padding(
               padding: EdgeInsets.all(15.0),
@@ -177,14 +175,12 @@ class _WeatherWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.grey.withOpacity(0.5),
       ),
-      child: SizedBox.expand(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text('Weather'),
-            Text('Good'),
-          ],
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text('Weather'),
+          Text('Good'),
+        ],
       ),
     );
   }

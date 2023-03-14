@@ -1,9 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:iphone_desktop/drawers/left_drawer_page.dart';
+import 'package:iphone_desktop/drawers/right_drawer_page.dart';
 import 'package:iphone_desktop/iphone_wallpaper.dart';
-import 'package:iphone_desktop/left_drawer_page.dart';
-import 'package:iphone_desktop/right_drawer_page.dart';
 import 'package:iphone_desktop/widgets/widgets.dart';
 import 'package:models/models.dart';
 

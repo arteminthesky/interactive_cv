@@ -27,13 +27,16 @@ class AppWidget extends StatelessWidget {
               ),
             ),
           ),
-          Text(
-            app.name,
-            maxLines: 1,
-            style: const TextStyle(
-              color: Colors.white,
+          Padding(
+            padding: const EdgeInsets.only(top: 5),
+            child: Text(
+              app.name,
+              maxLines: 1,
+              style: const TextStyle(
+                color: Colors.white,
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
           ),
         ],
       ),

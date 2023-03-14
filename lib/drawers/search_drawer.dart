@@ -3,33 +3,40 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
-import 'package:iphone_desktop/left_drawer_page.dart';
+import 'package:iphone_desktop/drawers/left_drawer_page.dart';
 
-class SiriSuggestions extends StatefulWidget {
-  const SiriSuggestions({Key? key, required this.controller}) : super(key: key);
+const _snapDuration = Duration(milliseconds: 600);
+const _animationDuration = Duration(milliseconds: 300);
 
+// TODO(artemov): refactor this peace of code (state management)
+class SearchDrawer extends StatefulWidget {
+  const SearchDrawer({
+    Key? key,
+    required this.controller,
+    required this.entry,
+    required this.slivers,
+  }) : super(key: key);
+
+  final OverlayEntry entry;
   final TopDrawerController controller;
+  final List<Widget> slivers;
 
   @override
-  State<SiriSuggestions> createState() => _SiriSuggestionsState();
+  State<SearchDrawer> createState() => _SearchDrawerState();
 }
 
-class _SiriSuggestionsState extends State<SiriSuggestions>
+class _SearchDrawerState extends State<SearchDrawer>
     with TickerProviderStateMixin {
   ScrollController? _scrollController;
   bool animating = false;
 
   late AnimationController _animation;
-  late AnimationController _endAnimation;
 
   @override
   void initState() {
     super.initState();
     widget.controller.addListener(_onStateChanged);
-    _animation =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
-    _endAnimation = AnimationController(
-        vsync: this, duration: Duration(milliseconds: 500), value: 1.0);
+    _animation = AnimationController(vsync: this, duration: _animationDuration);
   }
 
   @override
@@ -49,17 +56,18 @@ class _SiriSuggestionsState extends State<SiriSuggestions>
         _scrollController?.jumpTo(
           MediaQuery.of(context).size.height - offset.dy,
         );
-      } else if (state == TopDrawerAnimationState.end) {}
+      } else if (state == TopDrawerAnimationState.end) {
+        _animation.reverse(from: 1).then((_) {
+          if (mounted) {
+            widget.entry.remove();
+            widget.controller.value = TopDrawerState(Offset.zero, null);
+          }
+        });
+      }
     } else {
-      print(_animation.status);
       if (_animation.status != AnimationStatus.completed) {
         _animation.forward();
-      } else {
-        if (_endAnimation.status != AnimationStatus.dismissed) {
-          _animation.reverse();
-        }
       }
-
       _snap();
     }
   }
@@ -68,7 +76,7 @@ class _SiriSuggestionsState extends State<SiriSuggestions>
   void dispose() {
     widget.controller.removeListener(_onStateChanged);
     _scrollController?.dispose();
-    _animation?.dispose();
+    _animation.dispose();
     super.dispose();
   }
 
@@ -76,9 +84,6 @@ class _SiriSuggestionsState extends State<SiriSuggestions>
   Widget build(BuildContext context) {
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) {
-        print(_scrollController?.position.maxScrollExtent);
-        print(_scrollController?.offset);
-        print(MediaQuery.of(context).size.height);
         if (widget.controller.value.animationState ==
             TopDrawerAnimationState.idle) {
           final dragIsEnd = notification is ScrollUpdateNotification &&
@@ -118,24 +123,17 @@ class _SiriSuggestionsState extends State<SiriSuggestions>
                   child: const Placeholder(),
                 ),
               ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('${index.toString()} element'),
-                    );
-                  },
-                  childCount: 20,
-                ),
-              ),
+              ...widget.slivers,
               SliverToBoxAdapter(
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height,
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
-                      LeftDrawerControllerScope.of(context).hideTopDrawer();
+                      widget.controller.value = TopDrawerState(
+                        widget.controller.value.offset,
+                        TopDrawerAnimationState.end,
+                      );
                     },
                     child: const Placeholder(),
                   ),
@@ -155,7 +153,7 @@ class _SiriSuggestionsState extends State<SiriSuggestions>
         _scrollController
             ?.animateTo(
           MediaQuery.of(context).size.height,
-          duration: Duration(milliseconds: 600),
+          duration: _snapDuration,
           curve: Curves.easeOutExpo,
         )
             .then((_) {
@@ -175,7 +173,7 @@ class _SiriSuggestionsState extends State<SiriSuggestions>
               _scrollController!.position.maxScrollExtent -
                   MediaQuery.of(context).size.height,
               MediaQuery.of(context).size.height),
-          duration: Duration(milliseconds: 600),
+          duration: _snapDuration,
           curve: Curves.easeOutExpo,
         )
             .then((_) {
