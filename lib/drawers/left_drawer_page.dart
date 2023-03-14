@@ -2,8 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:iphone_desktop/drawers/search_drawer.dart';
-import 'package:iphone_desktop/widgets/fidgets/fidgets.dart';
-import 'package:iphone_desktop/widgets/ios_widget.dart';
+import 'package:iphone_desktop/widgets/widgets.dart';
 
 enum TopDrawerAnimationState { end, begin, idle, active }
 
@@ -59,7 +58,7 @@ class _LeftDrawerControllerState extends State<_LeftDrawerController> {
             padding: EdgeInsets.all(15.0),
             child: AspectRatio(
               aspectRatio: 2,
-              child: IosWidget(
+              child: IosFidget(
                 child: _WeatherWidget(),
               ),
             ),
@@ -88,7 +87,8 @@ class _LeftDrawerControllerState extends State<_LeftDrawerController> {
         var delta = move.localPosition - _gestureStart;
 
         if (delta.dy >= 0 &&
-            topDrawerController.value.animationState != TopDrawerAnimationState.idle &&
+            topDrawerController.value.animationState !=
+                TopDrawerAnimationState.idle &&
             _scrollController.offset < 0) {
           _showTopDrawer();
           _updateBeginAnimation(delta);
@@ -107,7 +107,8 @@ class _LeftDrawerControllerState extends State<_LeftDrawerController> {
   }
 
   void _updateBeginAnimation(Offset offset) {
-    topDrawerController.value = TopDrawerState(offset, TopDrawerAnimationState.begin);
+    topDrawerController.value =
+        TopDrawerState(offset, TopDrawerAnimationState.begin);
   }
 
   void _updateAnimation() {}

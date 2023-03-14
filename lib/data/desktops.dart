@@ -26,11 +26,11 @@ final apps = [
   App('', 'Notes'),
   App('', 'Photos'),
   App('', 'App Store'),
-  App('', 'TestFlight'),
+  App('assets/apps/testflight.png', 'TestFlight'),
 ];
 
 final desktops = [
-  Desktop(apps.take(5).toList()),
+  Desktop(apps.take(24).toList()),
   Desktop(apps.sublist(5, 10)),
   Desktop(apps.sublist(10, 23)),
 ];

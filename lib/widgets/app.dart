@@ -7,39 +7,28 @@ class AppWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(15),
-      child: Column(
-        children: [
-          AspectRatio(
-            aspectRatio: 1,
-            child: DecoratedBox(
-              decoration: const ShapeDecoration(
-                shape: SmoothRectangleBorder(
-                  borderRadius: SmoothBorderRadius.all(
-                    SmoothRadius(cornerRadius: 15, cornerSmoothing: 0.5),
-                  ),
-                ),
-                color: Colors.white,
-              ),
-              child: _AppIconSelector(
-                app: app,
-              ),
-            ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        AppIcon(
+          color: Colors.white,
+          child: _AppIconSelector(
+            app: app,
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 5),
-            child: Text(
-              app.name,
-              maxLines: 1,
-              style: const TextStyle(
-                color: Colors.white,
-              ),
-              textAlign: TextAlign.center,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 5),
+          child: Text(
+            app.name,
+            maxLines: 1,
+            style: const TextStyle(
+              color: Colors.white,
             ),
+            textAlign: TextAlign.center,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -76,12 +65,9 @@ class _AppIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (app.icon == '') return const Offstage();
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Image(
-        image: AssetImage(app.icon),
-        fit: BoxFit.cover,
-      ),
+    return Image(
+      image: AssetImage(app.icon),
+      fit: BoxFit.cover,
     );
   }
 }

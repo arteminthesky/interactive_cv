@@ -1,8 +1,7 @@
-import 'package:figma_squircle/figma_squircle.dart';
-import 'package:flutter/widgets.dart';
+part of widgets;
 
-class IosWidget extends StatelessWidget {
-  const IosWidget({
+class IosFidget extends StatelessWidget {
+  const IosFidget({
     Key? key,
     required this.child,
   }) : super(key: key);

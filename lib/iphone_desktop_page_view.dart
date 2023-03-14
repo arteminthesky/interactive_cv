@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:iphone_desktop/drawers/left_drawer_page.dart';
 import 'package:iphone_desktop/drawers/right_drawer_page.dart';
 import 'package:iphone_desktop/iphone_wallpaper.dart';
+import 'package:iphone_desktop/widgets/base/base.dart';
 import 'package:iphone_desktop/widgets/widgets.dart';
 import 'package:models/models.dart';
 
@@ -66,42 +67,68 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
         IPhoneWallpaper(
           wallpaper: widget.wallpaper,
         ),
-        PageView.builder(
-          itemCount: length,
-          controller: _desktopsController,
-          pageSnapping: false,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (BuildContext context, int position) {
-            Widget child = desktops[position];
+        Padding(
+          padding: const EdgeInsets.only(bottom: 100),
+          child: PageView.builder(
+            itemCount: length,
+            controller: _desktopsController,
+            pageSnapping: false,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (BuildContext context, int position) {
+              Widget child = desktops[position];
 
-            if (position == 1 && currentPageValue < 1) {
-              return Transform.translate(
-                offset: Offset(
-                    MediaQuery.of(context).size.width * -(1 - currentPageValue),
-                    0),
-                child: Transform.scale(
-                  scale: 1 - (0.2 * (1 - currentPageValue)),
-                  child: child,
-                ),
-              );
-            } else if (position == length - 2 &&
-                currentPageValue > length - 2) {
-              return Transform.translate(
-                offset: Offset(
-                    MediaQuery.of(context).size.width *
-                        -(length - 2 - currentPageValue),
-                    0),
-                child: Transform.scale(
-                  scale: 1 - 0.2 * -(length - 2 - currentPageValue),
-                  child: child,
-                ),
-              );
-            } else {
-              return child;
-            }
-          },
+              if (position == 1 && currentPageValue < 1) {
+                return Transform.translate(
+                  offset: Offset(
+                      MediaQuery.of(context).size.width * -(1 - currentPageValue),
+                      0),
+                  child: Transform.scale(
+                    scale: 1 - (0.2 * (1 - currentPageValue)),
+                    child: child,
+                  ),
+                );
+              } else if (position == length - 2 &&
+                  currentPageValue > length - 2) {
+                return Transform.translate(
+                  offset: Offset(
+                      MediaQuery.of(context).size.width *
+                          -(length - 2 - currentPageValue),
+                      0),
+                  child: Transform.scale(
+                    scale: 1 - 0.2 * -(length - 2 - currentPageValue),
+                    child: child,
+                  ),
+                );
+              } else {
+                return child;
+              }
+            },
+          ),
         ),
 
+        Padding(
+          padding: const EdgeInsets.all(20),
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: FidgetPanel(
+              blurred: true,
+              radius: 40,
+              child: ColoredBox(
+                color: Colors.white24,
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      for(int i = 0; i < 4; i++)
+                        AppIcon(child: const Offstage(),),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
         _DynamicBlur(
           controller: _desktopsController,
           desktopsCount: desktops.length,
