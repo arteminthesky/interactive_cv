@@ -6,7 +6,7 @@ class AppIcon extends StatelessWidget {
     required this.child,
     this.color = Colors.white,
     this.gradient,
-  }) : super(key: key);
+  })  :super(key: key);
 
   final Widget child;
   final Gradient? gradient;
@@ -26,7 +26,8 @@ class AppIcon extends StatelessWidget {
         ),
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: color,
+            // Gradient has priority
+            color: gradient == null ? (color ?? Colors.white) : null,
             gradient: gradient,
           ),
           child: child,

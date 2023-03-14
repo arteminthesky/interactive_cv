@@ -12,7 +12,8 @@ class AppWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         AppIcon(
-          color: Colors.white,
+          color: app.backgroundColor ?? Colors.white,
+          gradient: app.gradient,
           child: _AppIconSelector(
             app: app,
           ),
@@ -47,15 +48,15 @@ class _AppIconSelector extends StatelessWidget {
       case 'Calendar':
         return const CalendarAppIcon();
       default:
-        return _AppIcon(
+        return _DefaultIcon(
           app: app,
         );
     }
   }
 }
 
-class _AppIcon extends StatelessWidget {
-  const _AppIcon({
+class _DefaultIcon extends StatelessWidget {
+  const _DefaultIcon({
     Key? key,
     required this.app,
   }) : super(key: key);
@@ -65,9 +66,13 @@ class _AppIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (app.icon == '') return const Offstage();
-    return Image(
-      image: AssetImage(app.icon),
-      fit: BoxFit.cover,
+    return Padding(
+      padding: EdgeInsets.all(app.iconPadding?.toDouble() ?? 0.0),
+      child: Image(
+        image: AssetImage(app.icon),
+        fit: BoxFit.cover,
+        color: app.imageColor,
+      ),
     );
   }
 }
