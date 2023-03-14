@@ -1,6 +1,7 @@
 name: models
 description: Models for iPhone entities
 version: 1.0.0
+publish_to: none
 
 environment:
   sdk: '>=2.19.4 <3.0.0'
