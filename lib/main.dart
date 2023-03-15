@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:iphone_desktop/data/desktops.dart';
 import 'package:iphone_desktop/iphone_desktop_page_view.dart';
 import 'package:models/models.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,8 +14,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CupertinoApp(
-      home: DesktopPage(),
+    return Provider<SiriSuggestions>.value(
+      value: siriSuggestions,
+      child: const CupertinoApp(
+        home: DesktopPage(),
+      ),
     );
   }
 }

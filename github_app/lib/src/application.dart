@@ -19,9 +19,10 @@ class GitHubApplication extends OverlayApplication {
         navigationBar: CupertinoNavigationBar(
           leading: CupertinoButton(
             padding: EdgeInsets.zero,
-            onPressed: close,
+            onPressed: () => close(context),
             child: const Text('Close'),
           ),
+          middle: const Text('GitHub'),
         ),
         child: Container(),
       ),

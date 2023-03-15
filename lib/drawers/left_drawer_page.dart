@@ -53,15 +53,24 @@ class _LeftDrawerControllerState extends State<_LeftDrawerController> {
       entry: _topDrawerEntry,
       controller: topDrawerController,
       slivers: const [
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: EdgeInsets.all(15.0),
-            child: AspectRatio(
-              aspectRatio: 2,
-              child: IosFidget(
-                child: _WeatherWidget(),
+        SliverSafeArea(
+          bottom: false,
+          sliver: SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.all(15.0),
+              child: AspectRatio(
+                aspectRatio: 2,
+                child: IosFidget(
+                  child: _WeatherWidget(),
+                ),
               ),
             ),
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
+            child: SiriSuggestionsFidget(),
           ),
         ),
       ],
@@ -86,7 +95,8 @@ class _LeftDrawerControllerState extends State<_LeftDrawerController> {
       onPointerMove: (move) {
         var delta = move.localPosition - _gestureStart;
 
-        if (delta.dy >= 0 && _scrollController.positions.isNotEmpty &&
+        if (delta.dy >= 0 &&
+            _scrollController.positions.isNotEmpty &&
             topDrawerController.value.animationState !=
                 TopDrawerAnimationState.idle &&
             _scrollController.offset < 0) {

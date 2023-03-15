@@ -60,8 +60,9 @@ final desktops = [
   Desktop(applications),
 ];
 
-final siriSuggestions = [
-  App('assets/apps/camera.png', 'Camera'),
-  App('assets/apps/youtube.png', 'YouTube'),
-  App('assets/apps/camera.png', 'Camera'),
-];
+final siriSuggestions = SiriSuggestions(
+  [
+    LinkedInApplication('https://ru.linkedin.com/in/artemparfenov/'),
+    GitHubApplication(),
+  ],
+);
