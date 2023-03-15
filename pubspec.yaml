@@ -25,6 +25,9 @@ dependencies:
   linkedin_application:
     path: ./linkedin_application
 
+  github_app:
+    path: ./github_app
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,6 +1,5 @@
 import 'package:app_base/app_base.dart';
 import 'package:flutter/material.dart';
-import 'package:models/src/app.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LinkedInApplication extends Application {

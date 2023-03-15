@@ -10,7 +10,6 @@ class AppWidget extends StatelessWidget {
     return CupertinoButton(
       padding: EdgeInsets.zero,
       onPressed: () {
-        print('open');
         app.open(context);
       },
       child: Column(

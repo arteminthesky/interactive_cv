@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:github_app/github_app.dart';
 import 'package:linkedin_application/linkedin_application.dart';
 import 'package:models/models.dart';
 
@@ -51,6 +52,7 @@ final apps = [
 
 final applications = [
   LinkedInApplication('https://ru.linkedin.com/in/artemparfenov/'),
+  GitHubApplication(),
 ];
 
 final desktops = [
