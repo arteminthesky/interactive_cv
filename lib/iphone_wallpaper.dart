@@ -11,9 +11,11 @@ class IPhoneWallpaper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image(
-      image: AssetImage(wallpaper.asset),
-      fit: BoxFit.cover,
+    return SizedBox.expand(
+      child: Image(
+        image: AssetImage(wallpaper.asset),
+        fit: BoxFit.cover,
+      ),
     );
   }
 }

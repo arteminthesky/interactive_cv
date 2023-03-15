@@ -19,6 +19,12 @@ dependencies:
   figma_squircle: 0.5.3
   intl: 0.18.0
 
+  app_base:
+    path: ./app_base
+
+  linkedin_application:
+    path: ./linkedin_application
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

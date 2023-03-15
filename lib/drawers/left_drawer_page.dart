@@ -86,7 +86,7 @@ class _LeftDrawerControllerState extends State<_LeftDrawerController> {
       onPointerMove: (move) {
         var delta = move.localPosition - _gestureStart;
 
-        if (delta.dy >= 0 &&
+        if (delta.dy >= 0 && _scrollController.positions.isNotEmpty &&
             topDrawerController.value.animationState !=
                 TopDrawerAnimationState.idle &&
             _scrollController.offset < 0) {

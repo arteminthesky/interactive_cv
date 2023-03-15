@@ -1,17 +1,19 @@
+import 'package:app_base/app_base.dart';
+
 abstract class DesktopItem {}
 
 class Desktop {
-  final List<DesktopItem> items;
+  final List<Application> applications;
 
-  const Desktop(this.items);
+  const Desktop(this.applications);
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Desktop &&
           runtimeType == other.runtimeType &&
-          items == other.items;
+          applications == other.applications;
 
   @override
-  int get hashCode => items.hashCode;
+  int get hashCode => applications.hashCode;
 }

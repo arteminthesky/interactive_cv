@@ -17,10 +17,10 @@ class DesktopWidget extends StatelessWidget {
                 child: Row(
                   children: [
                     for (int j = 0; j < 4; j++)
-                      desktop.items.length > i * 4 + j
+                      desktop.applications.length > i * 4 + j
                           ? Expanded(
                               child: _WidgetSelector(
-                                item: desktop.items[i * 4 + j],
+                                item: desktop.applications[i * 4 + j],
                               ),
                             )
                           : const Expanded(child: Offstage()),
@@ -40,14 +40,10 @@ class _WidgetSelector extends StatelessWidget {
     required this.item,
   }) : super(key: key);
 
-  final DesktopItem item;
+  final Application item;
 
   @override
   Widget build(BuildContext context) {
-    if (item is App) {
-      return AppWidget(app: item as App);
-    } else {
-      throw Exception('Not supported yet');
-    }
+    return AppWidget(app: item);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:linkedin_application/linkedin_application.dart';
 import 'package:models/models.dart';
 
 final apps = [
@@ -48,10 +49,13 @@ final apps = [
   App('assets/apps/testflight.png', 'TestFlight'),
 ];
 
+final applications = [
+  LinkedInApplication('https://ru.linkedin.com/in/artemparfenov/'),
+];
+
 final desktops = [
-  Desktop(apps.take(5).toList()),
-  Desktop(apps.sublist(5, 10)),
-  Desktop(apps.sublist(10, 23)),
+  Desktop(applications),
+  Desktop(applications),
 ];
 
 final siriSuggestions = [
