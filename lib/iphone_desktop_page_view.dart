@@ -24,29 +24,22 @@ class IPhoneDesktopPageView extends StatefulWidget {
 
 class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
   final PageController _desktopsController =
-  PageController(viewportFraction: 0.999, initialPage: 1);
+      PageController(viewportFraction: 0.999, initialPage: 1);
 
   final PageController _leftDrawerPageController =
-  PageController(viewportFraction: 0.999, initialPage: 0);
+      PageController(viewportFraction: 0.999, initialPage: 0);
 
   final PageController _rightDrawerPageController =
-  PageController(viewportFraction: 0.999, initialPage: 1);
-
-  double currentPageValue = 1;
+      PageController(viewportFraction: 0.999, initialPage: 1);
 
   bool doNotTranslateRightDrawer = false;
   bool doNotTranslateLeftDrawer = false;
 
+  double get _width => MediaQuery.of(context).size.width;
+
   @override
   void initState() {
     super.initState();
-
-    _desktopsController.addListener(() {
-      setState(() {
-        currentPageValue = _desktopsController.page ?? 0;
-      });
-    });
-
     _leftDrawerPageController.addListener(() {
       setState(() {
         if (_leftDrawerPageController.positions.isNotEmpty) {
@@ -61,12 +54,8 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
     });
 
     _rightDrawerPageController.addListener(() {
-      var width = MediaQuery
-          .of(context)
-          .size
-          .width;
       var controllerAttached = _rightDrawerPageController.positions.isNotEmpty;
-      var lastPageOffset = (widget.desktops.length) * width * 0.999;
+      var lastPageOffset = (widget.desktops.length) * _width * 0.999;
 
       setState(() {
         doNotTranslateRightDrawer = controllerAttached &&
@@ -80,18 +69,12 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
               (_desktopsController.page ?? 1) > widget.desktops.length;
           if (isLastPage) {
             var offset = _rightDrawerPageController.offset;
-            print('LastPageOffset: $lastPageOffset');
-            print('Offset: ${lastPageOffset - offset}');
-            print('Min: ${min(lastPageOffset, lastPageOffset - offset)}');
             _desktopsController.jumpTo(lastPageOffset + offset);
-
-            print('New page: ${_desktopsController.page}');
           }
         }
       }
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -112,65 +95,72 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
           padding: const EdgeInsets.only(bottom: 100),
           child: AnimatedBuilder(
               animation: Listenable.merge(
-                [_leftDrawerPageController, _rightDrawerPageController],
+                [
+                  _leftDrawerPageController,
+                  _rightDrawerPageController,
+                  _desktopsController,
+                ],
               ),
               builder: (context, snapshot) {
                 var pageSnapping = true;
+                ScrollPhysics scrollPhysics = const ClampingScrollPhysics();
+
                 var leftDrawerAttached =
                     _leftDrawerPageController.positions.isNotEmpty;
                 var rightDrawerAttached =
                     _rightDrawerPageController.positions.isNotEmpty;
 
+                void lockScroll() {
+                  pageSnapping = false;
+                  scrollPhysics = const NeverScrollableScrollPhysics();
+                }
+
                 if (leftDrawerAttached) {
-                  if ((_leftDrawerPageController.page ?? 0) > 0) {
-                    pageSnapping = false;
+                  final page = _leftDrawerPageController.page ?? 0;
+                  if (page > 0 && page < 1) {
+                    lockScroll();
                   }
                 }
                 if (rightDrawerAttached) {
-                  if ((_rightDrawerPageController.page ?? 1) < 1) {
-                    pageSnapping = false;
+                  final page = _rightDrawerPageController.page ?? 1;
+                  if (page < 1 && page > 0) {
+                    lockScroll();
                   }
                 }
                 return PageView.builder(
                   itemCount: length,
                   controller: _desktopsController,
                   pageSnapping: pageSnapping,
-                  physics: const ClampingScrollPhysics(),
+                  physics: scrollPhysics,
                   itemBuilder: (BuildContext context, int position) {
                     Widget child = desktops[position];
+                    var currentPageValue = 1.0;
+                    var scale = 1.0;
+                    var translationOffset = Offset.zero;
+                    var scrollPosition = _desktopsController.position;
+                    if (!scrollPosition.hasPixels ||
+                        scrollPosition.hasContentDimensions) {
+                      currentPageValue = _desktopsController.page ?? 1;
+                    }
 
                     if (position == 1 && currentPageValue < 1) {
-                      return Transform.translate(
-                        offset: Offset(
-                            MediaQuery
-                                .of(context)
-                                .size
-                                .width *
-                                -(1 - currentPageValue),
-                            0),
-                        child: Transform.scale(
-                          scale: 1 - (0.2 * (1 - currentPageValue)),
-                          child: child,
-                        ),
-                      );
+                      final pageFraction = 1 - currentPageValue;
+                      translationOffset = Offset(_width * -pageFraction, 0);
+                      scale = 1 - (0.2 * pageFraction);
                     } else if (position == length - 2 &&
                         currentPageValue > length - 2) {
-                      return Transform.translate(
-                        offset: Offset(
-                            MediaQuery
-                                .of(context)
-                                .size
-                                .width *
-                                -(length - 2 - currentPageValue),
-                            0),
-                        child: Transform.scale(
-                          scale: 1 - 0.2 * -(length - 2 - currentPageValue),
-                          child: child,
-                        ),
-                      );
-                    } else {
-                      return child;
+                      var pageFraction = length - 2 - currentPageValue;
+                      translationOffset = Offset(_width * -pageFraction, 0);
+                      scale = 1 - (0.2 * -pageFraction);
                     }
+
+                    return Transform.translate(
+                      offset: translationOffset,
+                      child: Transform.scale(
+                        scale: scale,
+                        child: child,
+                      ),
+                    );
                   },
                 );
               }),
@@ -209,19 +199,16 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
           child: AnimatedBuilder(
             animation: _desktopsController,
             builder: (context, child) {
-              var width = MediaQuery
-                  .of(context)
-                  .size
-                  .width;
+              var width = MediaQuery.of(context).size.width;
               var desktopAttached = _desktopsController.positions.isNotEmpty;
 
               if (desktopAttached && (_desktopsController.page ?? 1) < 1) {
-                var translateOffset = doNotTranslateLeftDrawer ? 0.0 : -width *
-                    min(1, _desktopsController.page ?? 0);
+                var translateOffset = doNotTranslateLeftDrawer
+                    ? 0.0
+                    : -width * min(1, _desktopsController.page ?? 0);
 
                 return Transform.translate(
-                  offset:
-                  Offset(translateOffset, 0),
+                  offset: Offset(translateOffset, 0),
                   child: PageView(
                     controller: _leftDrawerPageController,
                     children: const [
@@ -240,10 +227,7 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
           child: AnimatedBuilder(
             animation: _desktopsController,
             builder: (context, child) {
-              final width = MediaQuery
-                  .of(context)
-                  .size
-                  .width;
+              final width = MediaQuery.of(context).size.width;
               final desktopAttached = _desktopsController.positions.isNotEmpty;
               final countOfPages = widget.desktops.length + 2;
 
@@ -251,14 +235,11 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
                 final currentPage = _desktopsController.page ?? 1;
                 final isLastPage = currentPage > countOfPages - 2;
 
-                print('current page: ${currentPage}');
-                print(isLastPage);
-
                 if (isLastPage) {
-                  var translateOffset = doNotTranslateRightDrawer ? 0.0 :
-                  width * min(1, countOfPages - 1 - currentPage);
+                  var translateOffset = doNotTranslateRightDrawer
+                      ? 0.0
+                      : width * min(1, countOfPages - 1 - currentPage);
 
-                  print(translateOffset);
                   return Transform.translate(
                     offset: Offset(translateOffset, 0),
                     child: PageView(
