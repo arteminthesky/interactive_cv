@@ -32,6 +32,13 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
   final PageController _rightDrawerPageController =
       PageController(viewportFraction: 0.999, initialPage: 1);
 
+  final ValueNotifier<bool> _mainPageSnapping = ValueNotifier(true);
+  final ValueNotifier<bool> _mainPageScrollPhysicsEnabled = ValueNotifier(true);
+
+  final ValueNotifier<bool> _leftDrawerTranslationLocker = ValueNotifier(false);
+  final ValueNotifier<bool> _rightDrawerTranslationLocker =
+      ValueNotifier(false);
+
   bool doNotTranslateRightDrawer = false;
   bool doNotTranslateLeftDrawer = false;
 
@@ -41,14 +48,18 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
   void initState() {
     super.initState();
     _leftDrawerPageController.addListener(() {
-      setState(() {
-        if (_leftDrawerPageController.positions.isNotEmpty) {
-          var page = _leftDrawerPageController.page ?? 0;
-          doNotTranslateLeftDrawer = page > 0 && page < 1;
+      if (_leftDrawerPageController.positions.isNotEmpty) {
+        var page = _leftDrawerPageController.page ?? 0;
+        _leftDrawerTranslationLocker.value = page > 0 && page < 1;
+
+        if (page < 1 && page > 0) {
+          lockScroll();
         } else {
-          doNotTranslateLeftDrawer = false;
+          unlockScroll();
         }
-      });
+      } else {
+        _leftDrawerTranslationLocker.value = false;
+      }
 
       _desktopsController.jumpTo(_leftDrawerPageController.offset);
     });
@@ -57,11 +68,9 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
       var controllerAttached = _rightDrawerPageController.positions.isNotEmpty;
       var lastPageOffset = (widget.desktops.length) * _width * 0.999;
 
-      setState(() {
-        doNotTranslateRightDrawer = controllerAttached &&
-            (_rightDrawerPageController.page ?? 0) < 1 &&
-            (_rightDrawerPageController.page ?? 0) > 0;
-      });
+      _rightDrawerTranslationLocker.value = controllerAttached &&
+          (_rightDrawerPageController.page ?? 0) < 1 &&
+          (_rightDrawerPageController.page ?? 0) > 0;
       if (controllerAttached) {
         var currentDrawerPage = _rightDrawerPageController.page ?? 0;
         if (currentDrawerPage < 1) {
@@ -72,8 +81,24 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
             _desktopsController.jumpTo(lastPageOffset + offset);
           }
         }
+        final page = _rightDrawerPageController.page ?? 1;
+        if (page < 1 && page > 0) {
+          lockScroll();
+        } else {
+          unlockScroll();
+        }
       }
     });
+  }
+
+  void unlockScroll() {
+    _mainPageSnapping.value = true;
+    _mainPageScrollPhysicsEnabled.value = true;
+  }
+
+  void lockScroll() {
+    _mainPageSnapping.value = false;
+    _mainPageScrollPhysicsEnabled.value = false;
   }
 
   @override
@@ -91,42 +116,27 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
         IPhoneWallpaper(
           wallpaper: widget.wallpaper,
         ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 100),
-          child: AnimatedBuilder(
+        RepaintBoundary(
+          key: ValueKey('main_pager'),
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 100),
+            child: AnimatedBuilder(
               animation: Listenable.merge(
                 [
-                  _leftDrawerPageController,
-                  _rightDrawerPageController,
+                  _mainPageSnapping,
+                  _mainPageScrollPhysicsEnabled,
                   _desktopsController,
                 ],
               ),
               builder: (context, snapshot) {
-                var pageSnapping = true;
-                ScrollPhysics scrollPhysics = const ClampingScrollPhysics();
-
-                var leftDrawerAttached =
-                    _leftDrawerPageController.positions.isNotEmpty;
-                var rightDrawerAttached =
-                    _rightDrawerPageController.positions.isNotEmpty;
-
-                void lockScroll() {
-                  pageSnapping = false;
+                var pageSnapping = _mainPageSnapping.value;
+                ScrollPhysics scrollPhysics;
+                if (_mainPageScrollPhysicsEnabled.value) {
+                  scrollPhysics = const ClampingScrollPhysics();
+                } else {
                   scrollPhysics = const NeverScrollableScrollPhysics();
                 }
 
-                if (leftDrawerAttached) {
-                  final page = _leftDrawerPageController.page ?? 0;
-                  if (page > 0 && page < 1) {
-                    lockScroll();
-                  }
-                }
-                if (rightDrawerAttached) {
-                  final page = _rightDrawerPageController.page ?? 1;
-                  if (page < 1 && page > 0) {
-                    lockScroll();
-                  }
-                }
                 return PageView.builder(
                   itemCount: length,
                   controller: _desktopsController,
@@ -163,7 +173,9 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
                     );
                   },
                 );
-              }),
+              },
+            ),
+          ),
         ),
         Padding(
           padding: const EdgeInsets.all(20),
@@ -197,35 +209,42 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
         RepaintBoundary(
           key: const ValueKey('left_drawer_repaint_boundary'),
           child: AnimatedBuilder(
-            animation: _desktopsController,
+            animation: Listenable.merge([
+              _desktopsController,
+              _leftDrawerTranslationLocker,
+            ]),
             builder: (context, child) {
               var width = MediaQuery.of(context).size.width;
               var desktopAttached = _desktopsController.positions.isNotEmpty;
 
               if (desktopAttached && (_desktopsController.page ?? 1) < 1) {
-                var translateOffset = doNotTranslateLeftDrawer
+                var translateOffset = _leftDrawerTranslationLocker.value
                     ? 0.0
                     : -width * min(1, _desktopsController.page ?? 0);
 
                 return Transform.translate(
                   offset: Offset(translateOffset, 0),
-                  child: PageView(
-                    controller: _leftDrawerPageController,
-                    children: const [
-                      LeftDrawerPage(),
-                      Offstage(),
-                    ],
-                  ),
+                  child: child,
                 );
               }
               return const Offstage();
             },
+            child: PageView(
+              controller: _leftDrawerPageController,
+              children: const [
+                LeftDrawerPage(),
+                Offstage(),
+              ],
+            ),
           ),
         ),
         RepaintBoundary(
           key: const ValueKey('right_drawer_repaint_boundary'),
           child: AnimatedBuilder(
-            animation: _desktopsController,
+            animation: Listenable.merge([
+              _desktopsController,
+              _rightDrawerTranslationLocker,
+            ]),
             builder: (context, child) {
               final width = MediaQuery.of(context).size.width;
               final desktopAttached = _desktopsController.positions.isNotEmpty;
@@ -236,24 +255,25 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
                 final isLastPage = currentPage > countOfPages - 2;
 
                 if (isLastPage) {
-                  var translateOffset = doNotTranslateRightDrawer
+                  var translateOffset = _rightDrawerTranslationLocker.value
                       ? 0.0
                       : width * min(1, countOfPages - 1 - currentPage);
 
                   return Transform.translate(
                     offset: Offset(translateOffset, 0),
-                    child: PageView(
-                      controller: _rightDrawerPageController,
-                      children: const [
-                        Offstage(),
-                        RightDrawerPage(),
-                      ],
-                    ),
+                    child: child,
                   );
                 }
               }
               return const Offstage();
             },
+            child: PageView(
+              controller: _rightDrawerPageController,
+              children: const [
+                Offstage(),
+                RightDrawerPage(),
+              ],
+            ),
           ),
         ),
       ],
