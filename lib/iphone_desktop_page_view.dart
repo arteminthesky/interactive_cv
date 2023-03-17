@@ -171,7 +171,6 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
                 if (page >= 0 && page < 1) {
                   translationOffset = _width * -page;
                 }
-                print(translationOffset);
                 return Transform.translate(
                   offset: Offset(
                     translationOffset,
@@ -180,7 +179,7 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
                   child: child,
                 );
               } else {
-                return Offstage();
+                return const Offstage();
               }
 
             },
@@ -229,7 +228,6 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
                       _desktopsController.offset;
                 }
               }
-              print(translationOffset);
               return Transform.translate(
                 offset: Offset(
                   translationOffset,
@@ -250,7 +248,6 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
                 rightDrawerCurrentPosition =
                     rightDrawerStartPosition - update.globalPosition.dx;
                 var lastPageOffset = (pagesLength - 1) * _width;
-                print(lastPageOffset);
                 _desktopsController.jumpTo(min(lastPageOffset - 1, lastPageOffset + rightDrawerCurrentPosition));
               },
               onPanDown: (details) {
