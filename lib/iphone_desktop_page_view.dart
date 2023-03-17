@@ -167,18 +167,22 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
             builder: (context, child) {
               var translationOffset = _width;
               if (_desktopsController.positions.isNotEmpty) {
-                var page = _desktopsController.page ?? 0;
+                var page = _desktopsController.page ?? 1;
                 if (page >= 0 && page < 1) {
                   translationOffset = _width * -page;
                 }
+                print(translationOffset);
+                return Transform.translate(
+                  offset: Offset(
+                    translationOffset,
+                    0,
+                  ),
+                  child: child,
+                );
+              } else {
+                return Offstage();
               }
-              return Transform.translate(
-                offset: Offset(
-                  translationOffset,
-                  0,
-                ),
-                child: child,
-              );
+
             },
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
