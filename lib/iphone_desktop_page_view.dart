@@ -54,14 +54,17 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
   var leftDrawerStartPosition = 0.0;
   var leftDrawerCurrentPosition = 0.0;
 
+  var rightDrawerStartPosition = 0.0;
+  var rightDrawerCurrentPosition = 0.0;
+
   @override
   Widget build(BuildContext context) {
     var length = widget.desktops.length + 2;
 
     var desktops = [
-      const LeftDrawerPage(),
+      const Offstage(),
       for (var desktop in widget.desktops) DesktopWidget(desktop: desktop),
-      const RightDrawerPage(),
+      const Offstage(),
     ];
 
     return Stack(
@@ -69,62 +72,65 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
         IPhoneWallpaper(
           wallpaper: widget.wallpaper,
         ),
-        AnimatedBuilder(
-            animation: Listenable.merge(
-                [_mainPageScrollPhysicsEnabled, _mainPageSnapping]),
-            builder: (context, snapshot) {
-              return RepaintBoundary(
-                key: ValueKey('main_pager'),
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 100),
-                  child: AnimatedBuilder(
-                    animation: _desktopsController,
-                    builder: (context, child) {
-                      return PageView.builder(
-                        itemCount: length,
-                        pageSnapping: _mainPageSnapping.value,
-                        physics: _mainPageScrollPhysicsEnabled.value
-                            ? _scrollPhysics
-                            : const NeverScrollableScrollPhysics(),
-                        controller: _desktopsController,
-                        itemBuilder: (BuildContext context, int position) {
-                          Widget child = desktops[position];
-                          var currentPageValue = 1.0;
-                          var scale = 1.0;
-                          var translationOffset = Offset.zero;
-                          var scrollPosition = _desktopsController.position;
-                          if (!scrollPosition.hasPixels ||
-                              scrollPosition.hasContentDimensions) {
-                            currentPageValue = _desktopsController.page ?? 1;
-                          }
+        RepaintBoundary(
+          key: const ValueKey('main_pager_repaint_boundary'),
+          child: AnimatedBuilder(
+              animation: Listenable.merge(
+                  [_mainPageScrollPhysicsEnabled, _mainPageSnapping]),
+              builder: (context, snapshot) {
+                return RepaintBoundary(
+                  key: ValueKey('main_pager'),
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 100),
+                    child: AnimatedBuilder(
+                      animation: _desktopsController,
+                      builder: (context, child) {
+                        return PageView.builder(
+                          itemCount: length,
+                          pageSnapping: _mainPageSnapping.value,
+                          physics: _mainPageScrollPhysicsEnabled.value
+                              ? _scrollPhysics
+                              : const NeverScrollableScrollPhysics(),
+                          controller: _desktopsController,
+                          itemBuilder: (BuildContext context, int position) {
+                            Widget child = desktops[position];
+                            var currentPageValue = 1.0;
+                            var scale = 1.0;
+                            var translationOffset = Offset.zero;
+                            var scrollPosition = _desktopsController.position;
+                            if (!scrollPosition.hasPixels ||
+                                scrollPosition.hasContentDimensions) {
+                              currentPageValue = _desktopsController.page ?? 1;
+                            }
 
-                          if (position == 1 && currentPageValue < 1) {
-                            final pageFraction = 1 - currentPageValue;
-                            translationOffset =
-                                Offset(_width * -pageFraction, 0);
-                            scale = 1 - (0.2 * pageFraction);
-                          } else if (position == length - 2 &&
-                              currentPageValue > length - 2) {
-                            var pageFraction = length - 2 - currentPageValue;
-                            translationOffset =
-                                Offset(_width * -pageFraction, 0);
-                            scale = 1 - (0.2 * -pageFraction);
-                          }
+                            if (position == 1 && currentPageValue < 1) {
+                              final pageFraction = 1 - currentPageValue;
+                              translationOffset =
+                                  Offset(_width * -pageFraction, 0);
+                              scale = 1 - (0.2 * pageFraction);
+                            } else if (position == length - 2 &&
+                                currentPageValue > length - 2) {
+                              var pageFraction = length - 2 - currentPageValue;
+                              translationOffset =
+                                  Offset(_width * -pageFraction, 0);
+                              scale = 1 - (0.2 * -pageFraction);
+                            }
 
-                          return Transform.translate(
-                            offset: translationOffset,
-                            child: Transform.scale(
-                              scale: scale,
-                              child: child,
-                            ),
-                          );
-                        },
-                      );
-                    },
+                            return Transform.translate(
+                              offset: translationOffset,
+                              child: Transform.scale(
+                                scale: scale,
+                                child: child,
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
                   ),
-                ),
-              );
-            }),
+                );
+              }),
+        ),
         Padding(
           padding: const EdgeInsets.all(20),
           child: Align(
@@ -154,52 +160,113 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
           controller: _desktopsController,
           desktopsCount: desktops.length,
         ),
-        AnimatedBuilder(
-          animation: _desktopsController,
-          builder: (context, child) {
-            var translationOffset = _width;
-            if (_desktopsController.positions.isNotEmpty) {
-              var page = _desktopsController.page ?? 0;
-              if (page >= 0 && page < 1) {
-                translationOffset = _width * -page;
+        RepaintBoundary(
+          key: const ValueKey('left_drawer_repaint_boundary'),
+          child: AnimatedBuilder(
+            animation: _desktopsController,
+            builder: (context, child) {
+              var translationOffset = _width;
+              if (_desktopsController.positions.isNotEmpty) {
+                var page = _desktopsController.page ?? 0;
+                if (page >= 0 && page < 1) {
+                  translationOffset = _width * -page;
+                }
               }
-            }
-            return Transform.translate(
-              offset: Offset(
-                translationOffset,
-                0,
-              ),
-              child: child,
-            );
-          },
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onPanStart: (start) {
-              leftDrawerStartPosition = start.globalPosition.dx;
-              lockScroll();
+              return Transform.translate(
+                offset: Offset(
+                  translationOffset,
+                  0,
+                ),
+                child: child,
+              );
             },
-            onPanUpdate: (update) {
-              leftDrawerCurrentPosition =
-                  leftDrawerStartPosition - update.globalPosition.dx;
-              _desktopsController.jumpTo(max(0, leftDrawerCurrentPosition));
-            },
-            onPanDown: (details) {
-              unlockScroll();
-              leftDrawerCurrentPosition = 0;
-            },
-            onPanEnd: (details) {
-              unlockScroll();
-              var position = _desktopsController.position;
-              if(position is ScrollPositionWithSingleContext) {
-                position.goBallistic(-details.velocity.pixelsPerSecond.dx);
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onPanStart: (start) {
+                leftDrawerStartPosition = start.globalPosition.dx;
+                lockScroll();
+              },
+              onPanUpdate: (update) {
+                leftDrawerCurrentPosition =
+                    leftDrawerStartPosition - update.globalPosition.dx;
+                _desktopsController.jumpTo(max(0, leftDrawerCurrentPosition));
+              },
+              onPanDown: (details) {
+                unlockScroll();
+                leftDrawerCurrentPosition = 0;
+              },
+              onPanEnd: (details) {
+                unlockScroll();
+                var position = _desktopsController.position;
+                if (position is ScrollPositionWithSingleContext) {
+                  position.goBallistic(-details.velocity.pixelsPerSecond.dx);
+                }
+                leftDrawerCurrentPosition = 0;
+              },
+              onPanCancel: () {
+                unlockScroll();
+                leftDrawerCurrentPosition = 0;
+              },
+              child: const LeftDrawerPage(),
+            ),
+          ),
+        ),
+        RepaintBoundary(
+          key: const ValueKey('right_drawer_repaint_boundary'),
+          child: AnimatedBuilder(
+            animation: _desktopsController,
+            builder: (context, child) {
+              var translationOffset = _width;
+              if (_desktopsController.positions.isNotEmpty) {
+                var page = _desktopsController.page ?? 0;
+                var pagesLength = desktops.length;
+                if (page > pagesLength - 2 && page <= pagesLength - 1) {
+                  translationOffset = _width * (desktops.length - 1) -
+                      _desktopsController.offset;
+                }
               }
-              leftDrawerCurrentPosition = 0;
+              print(translationOffset);
+              return Transform.translate(
+                offset: Offset(
+                  translationOffset,
+                  0,
+                ),
+                child: child,
+              );
             },
-            onPanCancel: () {
-              unlockScroll();
-              leftDrawerCurrentPosition = 0;
-            },
-            child: const LeftDrawerPage(),
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onPanStart: (start) {
+                rightDrawerStartPosition = start.globalPosition.dx;
+                lockScroll();
+              },
+              onPanUpdate: (update) {
+                var pagesLength = desktops.length;
+
+                rightDrawerCurrentPosition =
+                    rightDrawerStartPosition - update.globalPosition.dx;
+                var lastPageOffset = (pagesLength - 1) * _width;
+                print(lastPageOffset);
+                _desktopsController.jumpTo(min(lastPageOffset - 1, lastPageOffset + rightDrawerCurrentPosition));
+              },
+              onPanDown: (details) {
+                unlockScroll();
+                rightDrawerCurrentPosition = 0;
+              },
+              onPanEnd: (details) {
+                unlockScroll();
+                var position = _desktopsController.position;
+                if (position is ScrollPositionWithSingleContext) {
+                  position.goBallistic(-details.velocity.pixelsPerSecond.dx);
+                }
+                rightDrawerCurrentPosition = 0;
+              },
+              onPanCancel: () {
+                unlockScroll();
+                rightDrawerCurrentPosition = 0;
+              },
+              child: const RightDrawerPage(),
+            ),
           ),
         ),
       ],

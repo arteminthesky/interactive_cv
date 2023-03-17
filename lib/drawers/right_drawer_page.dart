@@ -10,6 +10,7 @@ class RightDrawerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ColoredBox(
       color: Colors.red.withOpacity(0.5),
+      child: SizedBox.expand(),
     );
   }
 }
