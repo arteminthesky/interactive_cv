@@ -195,6 +195,10 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
               }
             },
             child: GestureDetector(
+              supportedDevices: const {
+                PointerDeviceKind.mouse,
+                PointerDeviceKind.touch,
+              },
               behavior: HitTestBehavior.opaque,
               onPanStart: (start) {
                 leftDrawerStartPosition = start.globalPosition.dx;
@@ -248,6 +252,10 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
               );
             },
             child: GestureDetector(
+              supportedDevices: const {
+                PointerDeviceKind.mouse,
+                PointerDeviceKind.touch,
+              },
               behavior: HitTestBehavior.opaque,
               onPanStart: (start) {
                 rightDrawerStartPosition = start.globalPosition.dx;

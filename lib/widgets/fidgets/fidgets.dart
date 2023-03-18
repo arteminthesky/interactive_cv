@@ -8,3 +8,4 @@ import 'package:provider/provider.dart';
 
 part 'weather_fidget.dart';
 part 'siri_suggestions.dart';
+part 'bmo_fidget.dart';

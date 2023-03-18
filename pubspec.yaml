@@ -32,6 +32,9 @@ dependencies:
   platform:
     path: ./platform
 
+  window:
+    path: ./window
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

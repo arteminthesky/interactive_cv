@@ -1,5 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:iphone_desktop/drawers/search_drawer.dart';
 import 'package:iphone_desktop/widgets/widgets.dart';
@@ -90,11 +92,15 @@ class _LeftDrawerControllerState extends State<_LeftDrawerController> {
   Widget build(BuildContext context) {
     return Listener(
       onPointerDown: (down) {
+        print('down');
         _gestureStart = down.localPosition;
       },
       onPointerMove: (move) {
+        print('move');
         var delta = move.localPosition - _gestureStart;
-
+        print(delta);
+        print(_scrollController.offset);
+        print(topDrawerController.value.animationState);
         if (delta.dy >= 0 &&
             _scrollController.positions.isNotEmpty &&
             topDrawerController.value.animationState !=
@@ -109,9 +115,18 @@ class _LeftDrawerControllerState extends State<_LeftDrawerController> {
           _idleAnimation();
         }
       },
-      child: PrimaryScrollController(
-        controller: _scrollController,
-        child: widget.child,
+      child: ScrollConfiguration(
+        behavior: ScrollConfiguration.of(context).copyWith(
+          dragDevices: {
+            PointerDeviceKind.touch,
+            PointerDeviceKind.mouse,
+          }
+        ),
+        child: PrimaryScrollController(
+          automaticallyInheritForPlatforms: TargetPlatform.values.toSet(),
+          controller: _scrollController,
+          child: widget.child,
+        ),
       ),
     );
   }
