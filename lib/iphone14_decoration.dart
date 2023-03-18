@@ -1,3 +1,4 @@
+import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:iphone_desktop/main.dart';
 
@@ -24,18 +25,23 @@ class IPhone14Decoration extends StatelessWidget {
       children: [
         DecoratedBox(
           position: DecorationPosition.foreground,
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(
-              Radius.circular(50),
-            ),
-            border: Border.all(
+          decoration: ShapeDecoration(
+            shape: SmoothRectangleBorder(
+              borderRadius: SmoothBorderRadius(
+                cornerRadius: 50,
+                cornerSmoothing: 0.5,
+              ),
+              side: const BorderSide(
                 color: Colors.black,
                 width: 6,
-                strokeAlign: BorderSide.strokeAlignOutside),
+                strokeAlign: BorderSide.strokeAlignOutside,
+              ),
+            ),
           ),
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(
-              Radius.circular(50),
+          child: ClipSmoothRect(
+            radius: SmoothBorderRadius(
+              cornerRadius: 50,
+              cornerSmoothing: 0.5,
             ),
             child: SizedBox.fromSize(
               size: kIphone14ScreenSize,

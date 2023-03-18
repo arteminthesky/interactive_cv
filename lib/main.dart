@@ -78,7 +78,7 @@ class AppDecoration extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final platformInfo = platform.instance;
-    if (platformInfo.isDesktop) {
+    if (platformInfo.isWeb) {
       return DecoratedBox(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -89,8 +89,14 @@ class AppDecoration extends StatelessWidget {
           ),
         ),
         child: Center(
-          child: IPhone14Decoration(
-            appBuilder: appBuilder,
+          child: Padding(
+            padding: const EdgeInsets.all(50),
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: IPhone14Decoration(
+                appBuilder: appBuilder,
+              ),
+            ),
           ),
         ),
       );

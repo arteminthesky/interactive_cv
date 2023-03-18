@@ -31,7 +31,7 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
 
   double get _width => MediaQuery.of(context).size.width;
 
-  final _scrollPhysics = const ClampingScrollPhysics();
+  final _scrollPhysics = const BouncingScrollPhysics();
 
   @override
   void dispose() {
@@ -40,7 +40,6 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
     _desktopsController.dispose();
     super.dispose();
   }
-
 
   void unlockScroll() {
     _mainPageSnapping.value = true;
@@ -76,64 +75,70 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
         ),
         RepaintBoundary(
           key: const ValueKey('main_pager_repaint_boundary'),
-          child: AnimatedBuilder(
+          child: ScrollConfiguration(
+            behavior: ScrollConfiguration.of(context).copyWith(
+              dragDevices: {
+                PointerDeviceKind.touch,
+                PointerDeviceKind.mouse,
+              },
+            ),
+            child: AnimatedBuilder(
               animation: Listenable.merge([
                 _mainPageScrollPhysicsEnabled,
                 _mainPageSnapping,
               ]),
               builder: (context, snapshot) {
-                return RepaintBoundary(
-                  key: const ValueKey('main_pager'),
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 100),
-                    child: AnimatedBuilder(
-                      animation: _desktopsController,
-                      builder: (context, child) {
-                        return PageView.builder(
-                          itemCount: length,
-                          pageSnapping: _mainPageSnapping.value,
-                          physics: _mainPageScrollPhysicsEnabled.value
-                              ? _scrollPhysics
-                              : const NeverScrollableScrollPhysics(),
-                          controller: _desktopsController,
-                          itemBuilder: (BuildContext context, int position) {
-                            Widget child = desktops[position];
-                            var currentPageValue = 1.0;
-                            var scale = 1.0;
-                            var translationOffset = Offset.zero;
-                            var scrollPosition = _desktopsController.position;
-                            if (!scrollPosition.hasPixels ||
-                                scrollPosition.hasContentDimensions) {
-                              currentPageValue = _desktopsController.page ?? 1;
-                            }
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 100),
+                  child: AnimatedBuilder(
+                    animation: _desktopsController,
+                    builder: (context, child) {
+                      return PageView.builder(
+                        itemCount: length,
+                        pageSnapping: _mainPageSnapping.value,
+                        physics: _mainPageScrollPhysicsEnabled.value
+                            ? _scrollPhysics
+                            : const NeverScrollableScrollPhysics(),
+                        controller: _desktopsController,
+                        itemBuilder: (BuildContext context, int position) {
+                          Widget child = desktops[position];
+                          var currentPageValue = 1.0;
+                          var scale = 1.0;
+                          var translationOffset = Offset.zero;
+                          var scrollPosition = _desktopsController.position;
+                          if (!scrollPosition.hasPixels ||
+                              scrollPosition.hasContentDimensions) {
+                            currentPageValue = _desktopsController.page ?? 1;
+                          }
 
-                            if (position == 1 && currentPageValue < 1) {
-                              final pageFraction = 1 - currentPageValue;
-                              translationOffset =
-                                  Offset(_width * -pageFraction, 0);
-                              scale = 1 - (0.2 * pageFraction);
-                            } else if (position == length - 2 &&
-                                currentPageValue > length - 2) {
-                              var pageFraction = length - 2 - currentPageValue;
-                              translationOffset =
-                                  Offset(_width * -pageFraction, 0);
-                              scale = 1 - (0.2 * -pageFraction);
-                            }
+                          if (position == 1 && currentPageValue < 1) {
+                            final pageFraction = 1 - currentPageValue;
+                            translationOffset =
+                                Offset(_width * -pageFraction, 0);
+                            scale = 1 - (0.2 * pageFraction);
+                          } else if (position == length - 2 &&
+                              currentPageValue > length - 2) {
+                            var pageFraction = length - 2 - currentPageValue;
+                            translationOffset =
+                                Offset(_width * -pageFraction, 0);
+                            scale = 1 - (0.2 * -pageFraction);
+                          }
 
-                            return Transform.translate(
-                              offset: translationOffset,
-                              child: Transform.scale(
-                                scale: scale,
-                                child: child,
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    ),
+                          return Transform.translate(
+                            offset: translationOffset,
+                            child: Transform.scale(
+                              scale: scale,
+                              child: child,
+                            ),
+                          );
+                        },
+                      );
+                    },
                   ),
                 );
-              }),
+              },
+            ),
+          ),
         ),
         SafeArea(
           top: false,
