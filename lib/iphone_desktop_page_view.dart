@@ -29,17 +29,18 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
   final ValueNotifier<bool> _mainPageSnapping = ValueNotifier(true);
   final ValueNotifier<bool> _mainPageScrollPhysicsEnabled = ValueNotifier(true);
 
-  bool doNotTranslateRightDrawer = false;
-  bool doNotTranslateLeftDrawer = false;
-
   double get _width => MediaQuery.of(context).size.width;
 
-  var _scrollPhysics = const ClampingScrollPhysics();
+  final _scrollPhysics = const ClampingScrollPhysics();
 
   @override
-  void initState() {
-    super.initState();
+  void dispose() {
+    _mainPageSnapping.dispose();
+    _mainPageScrollPhysicsEnabled.dispose();
+    _desktopsController.dispose();
+    super.dispose();
   }
+
 
   void unlockScroll() {
     _mainPageSnapping.value = true;
@@ -68,6 +69,7 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
     ];
 
     return Stack(
+      clipBehavior: Clip.hardEdge,
       children: [
         IPhoneWallpaper(
           wallpaper: widget.wallpaper,
@@ -75,11 +77,13 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
         RepaintBoundary(
           key: const ValueKey('main_pager_repaint_boundary'),
           child: AnimatedBuilder(
-              animation: Listenable.merge(
-                  [_mainPageScrollPhysicsEnabled, _mainPageSnapping]),
+              animation: Listenable.merge([
+                _mainPageScrollPhysicsEnabled,
+                _mainPageSnapping,
+              ]),
               builder: (context, snapshot) {
                 return RepaintBoundary(
-                  key: ValueKey('main_pager'),
+                  key: const ValueKey('main_pager'),
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 100),
                     child: AnimatedBuilder(
@@ -131,25 +135,28 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
                 );
               }),
         ),
-        Padding(
-          padding: const EdgeInsets.all(20),
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: FidgetPanel(
-              blurred: true,
-              radius: 40,
-              child: ColoredBox(
-                color: Colors.white24,
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      for (int i = 0; i < 4; i++)
-                        const AppIcon(
-                          child: Offstage(),
-                        ),
-                    ],
+        SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: FidgetPanel(
+                blurred: true,
+                radius: 40,
+                child: ColoredBox(
+                  color: Colors.white24,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        for (int i = 0; i < 4; i++)
+                          const AppIcon(
+                            child: Offstage(),
+                          ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -181,7 +188,6 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
               } else {
                 return const Offstage();
               }
-
             },
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
@@ -248,7 +254,8 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
                 rightDrawerCurrentPosition =
                     rightDrawerStartPosition - update.globalPosition.dx;
                 var lastPageOffset = (pagesLength - 1) * _width;
-                _desktopsController.jumpTo(min(lastPageOffset - 1, lastPageOffset + rightDrawerCurrentPosition));
+                _desktopsController.jumpTo(min(lastPageOffset - 1,
+                    lastPageOffset + rightDrawerCurrentPosition));
               },
               onPanDown: (details) {
                 unlockScroll();

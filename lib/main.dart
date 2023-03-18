@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iphone_desktop/data/desktops.dart';
+import 'package:iphone_desktop/iphone14_decoration.dart';
 import 'package:iphone_desktop/iphone_desktop_page_view.dart';
 import 'package:models/models.dart';
+import 'package:platform/platform.dart' as platform;
 import 'package:provider/provider.dart';
 
 void main() {
@@ -14,12 +16,26 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<SiriSuggestions>.value(
-      value: siriSuggestions,
-      child: const CupertinoApp(
-        home: DesktopPage(),
-      ),
-    );
+    return AppDecoration(appBuilder: (_, size, safeArea) {
+      return Provider<SiriSuggestions>.value(
+        value: siriSuggestions,
+        child: CupertinoApp(
+          builder: (context, child) {
+            if (size.isInfinite) {
+              return child!;
+            }
+            return MediaQuery(
+              data: MediaQuery.of(context).copyWith(
+                size: size,
+                padding: safeArea,
+              ),
+              child: child!,
+            );
+          },
+          home: const DesktopPage(),
+        ),
+      );
+    });
   }
 }
 
@@ -42,5 +58,44 @@ class _DesktopPageState extends State<DesktopPage> {
         desktops: desktops,
       ),
     );
+  }
+}
+
+typedef AppBuilder = Widget Function(
+  BuildContext context,
+  Size size,
+  EdgeInsets safeArea,
+);
+
+class AppDecoration extends StatelessWidget {
+  const AppDecoration({
+    Key? key,
+    required this.appBuilder,
+  }) : super(key: key);
+
+  final AppBuilder appBuilder;
+
+  @override
+  Widget build(BuildContext context) {
+    final platformInfo = platform.instance;
+    if (platformInfo.isDesktop) {
+      return DecoratedBox(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.white24,
+              Colors.black45,
+            ],
+          ),
+        ),
+        child: Center(
+          child: IPhone14Decoration(
+            appBuilder: appBuilder,
+          ),
+        ),
+      );
+    } else {
+      return appBuilder(context, Size.infinite, EdgeInsets.zero);
+    }
   }
 }

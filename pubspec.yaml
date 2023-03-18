@@ -29,6 +29,9 @@ dependencies:
   github_app:
     path: ./github_app
 
+  platform:
+    path: ./platform
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
