@@ -1,3 +1,6 @@
+import 'dart:math';
+import 'dart:ui';
+
 import 'package:app_base/app_base.dart';
 import 'package:flutter/widgets.dart';
 
@@ -6,8 +9,16 @@ abstract class OverlayApplication extends Application {
     builder: _buildApp,
   );
 
+  final GlobalKey<_AppTransitionState> _appTransitionKey = GlobalKey();
+
   Widget _buildApp(BuildContext context) {
-    return _AppTransition(builder: buildApp);
+    return _Closable(
+      onClose: _overlayEntry.remove,
+      child: _AppTransition(
+        key: _appTransitionKey,
+        builder: buildApp,
+      ),
+    );
   }
 
   Widget buildApp(BuildContext context);
@@ -68,5 +79,79 @@ class _AppTransitionState extends State<_AppTransition>
 
   Future<void> close() {
     return _transitionController.reverse();
+  }
+}
+
+class _Closable extends StatefulWidget {
+  const _Closable({
+    Key? key,
+    required this.child,
+    required this.onClose,
+  }) : super(key: key);
+
+  final Widget child;
+  final VoidCallback onClose;
+
+  @override
+  State<_Closable> createState() => _ClosableState();
+}
+
+class _ClosableState extends State<_Closable>
+    with SingleTickerProviderStateMixin {
+  final ValueNotifier<double> _translateListenable = ValueNotifier(0);
+  AnimationController? _closeController;
+
+  @override
+  void initState() {
+    super.initState();
+    _closeController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      fit: StackFit.expand,
+      alignment: Alignment.center,
+      children: [
+        RepaintBoundary(
+          child: AnimatedBuilder(
+            animation: _translateListenable,
+            builder: (context, child) {
+              return Transform.translate(
+                offset: Offset(_translateListenable.value, 0),
+                child: child,
+              );
+            },
+            child: SizedBox.expand(
+              child: widget.child,
+            ),
+          ),
+        ),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            supportedDevices: const {
+              PointerDeviceKind.touch,
+              PointerDeviceKind.mouse,
+            },
+            onHorizontalDragUpdate: (update) {
+              _translateListenable.value =
+                  max(0, _translateListenable.value + update.delta.dx);
+            },
+            onHorizontalDragEnd: (details) {
+              _closeController?.forward();
+            },
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height,
+              width: 50,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
