@@ -6,7 +6,8 @@ class BmoFidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FidgetPanel(
-      aspectRatio: 2/3,
+      aspectRatio: 2 / 3,
+      radius: 25,
       blurred: false,
       child: CustomPaint(
         painter: BmoPainter(),
@@ -31,7 +32,7 @@ class BmoPainter extends CustomPainter {
   }
 
   void _drawBackground(Canvas canvas, Size size) {
-    canvas.drawColor(Colors.greenAccent, BlendMode.src);
+    canvas.drawColor(const Color(0xff6ab8a0), BlendMode.src);
   }
 
   void _drawScreen(Canvas canvas, Size size) {
@@ -39,12 +40,63 @@ class BmoPainter extends CustomPainter {
     screenRect = screenRect.deflate(10);
     canvas.drawRRect(
       RRect.fromRectXY(screenRect, 20, 20),
-      Paint()..color = Colors.green,
+      Paint()..color = const Color(0xffc6fdcb),
+    );
+    canvas.drawRRect(
+      RRect.fromRectXY(screenRect, 20, 20),
+      Paint()
+        ..color = Colors.black
+        ..strokeWidth = 2
+        ..style = PaintingStyle.stroke,
+    );
+
+    _drawEye(canvas, screenRect.center + const Offset(-40, -10));
+    _drawEye(canvas, screenRect.center + const Offset(40, -10));
+    _drawMouth(canvas, screenRect.center);
+  }
+
+  void _drawEye(Canvas canvas, Offset offset) {
+    canvas.drawCircle(
+      offset,
+      10,
+      Paint()
+        ..color = Colors.black
+        ..style = PaintingStyle.fill,
+    );
+    canvas.drawCircle(
+      offset + const Offset(3, 3),
+      3,
+      Paint()..color = Colors.white54,
+    );
+  }
+
+  void _drawMouth(Canvas canvas, Offset center) {
+    canvas.drawArc(
+      Rect.fromCenter(center: center, width: 40, height: 40),
+      pi / 4,
+      pi / 2,
+      false,
+      Paint()
+        ..color = Colors.black
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 4
+        ..strokeCap = StrokeCap.round,
     );
   }
 
   void _drawControls(Canvas canvas, Size size) {
-
+    var romRect = const Offset(40, 10) & const Size(150, 30);
+    canvas.drawRect(
+      romRect,
+      Paint()..color = const Color(0xff163628),
+    );
+    canvas.drawRect(
+      romRect,
+      Paint()
+        ..color = Colors.black
+        ..strokeWidth = 2
+        ..style = PaintingStyle.stroke,
+    );
   }
 
   @override

@@ -1,5 +1,7 @@
 library fidgets;
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:iphone_desktop/widgets/base/base.dart';
 import 'package:iphone_desktop/widgets/widgets.dart';
