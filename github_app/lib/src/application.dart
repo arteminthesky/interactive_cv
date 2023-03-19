@@ -3,6 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class GitHubApplication extends OverlayApplication {
+
+  GitHubApplication();
+
   @override
   App get appIcon => App(
         'assets/apps/github.png',
@@ -14,17 +17,12 @@ class GitHubApplication extends OverlayApplication {
 
   @override
   Widget buildApp(BuildContext context) {
-    return CupertinoApp(
+    return const CupertinoApp(
       home: CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
-          leading: CupertinoButton(
-            padding: EdgeInsets.zero,
-            onPressed: () => close(context),
-            child: const Text('Close'),
-          ),
-          middle: const Text('GitHub'),
+          middle: Text('GitHub'),
         ),
-        child: Container(),
+        child: Scaffold(),
       ),
     );
   }

@@ -1,7 +1,7 @@
 class Wallpaper {
   final String asset;
 
-  Wallpaper(this.asset);
+  const Wallpaper(this.asset);
 
   @override
   bool operator ==(Object other) =>

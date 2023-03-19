@@ -29,6 +29,9 @@ dependencies:
   github_app:
     path: ./github_app
 
+  gmail:
+    path: ./gmail
+
   platform:
     path: ./platform
 

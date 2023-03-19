@@ -2,9 +2,6 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:iphone_desktop/drawers/left_drawer_page.dart';
-import 'package:iphone_desktop/drawers/notifications_drawer.dart';
-import 'package:iphone_desktop/drawers/right_drawer_page.dart';
 import 'package:iphone_desktop/iphone_wallpaper.dart';
 import 'package:iphone_desktop/widgets/widgets.dart';
 import 'package:models/models.dart';
@@ -15,10 +12,16 @@ class IPhoneDesktopPageView extends StatefulWidget {
     Key? key,
     required this.desktops,
     required this.wallpaper,
+    required this.leftDrawer,
+    required this.rightDrawer,
+    required this.topDrawer,
   }) : super(key: key);
 
   final List<Desktop> desktops;
   final Wallpaper wallpaper;
+  final Widget leftDrawer;
+  final Widget rightDrawer;
+  final Widget topDrawer;
 
   @override
   State<IPhoneDesktopPageView> createState() => _IPhoneDesktopPageViewState();
@@ -227,7 +230,7 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
                 unlockScroll();
                 leftDrawerCurrentPosition = 0;
               },
-              child: const LeftDrawerPage(),
+              child: widget.leftDrawer,
             ),
           ),
         ),
@@ -288,15 +291,18 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
                 unlockScroll();
                 rightDrawerCurrentPosition = 0;
               },
-              child: const RightDrawerPage(),
+              child: widget.rightDrawer,
             ),
           ),
         ),
         if (platform.instance.isDesktop)
-          const TopDrawerController(
-            scrimColor: Colors.transparent,
-            edgeDragHeight: 100,
-            child: NotificationsDrawerPage(),
+          RepaintBoundary(
+            key: const ValueKey('top_drawer_repaint_boundary'),
+            child: TopDrawerController(
+              scrimColor: Colors.transparent,
+              edgeDragHeight: 100,
+              child: widget.topDrawer,
+            ),
           ),
       ],
     );

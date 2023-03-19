@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iphone_desktop/data/desktops.dart';
+import 'package:iphone_desktop/drawers/left_drawer_page.dart';
+import 'package:iphone_desktop/drawers/notifications_drawer.dart';
+import 'package:iphone_desktop/drawers/right_drawer_page.dart';
 import 'package:iphone_desktop/iphone_desktop_page_view.dart';
 import 'package:iphone_desktop/widgets/decorations/decorations.dart';
 import 'package:iphone_desktop/widgets/decorations/web_decoration.dart';
@@ -60,8 +63,11 @@ class _DesktopPageState extends State<DesktopPage> {
       backgroundColor: Colors.transparent,
       extendBodyBehindAppBar: true,
       body: IPhoneDesktopPageView(
-        wallpaper: Wallpaper('assets/wallpapers/wp_1.jpg'),
+        wallpaper: const Wallpaper('assets/wallpapers/wp_1.jpg'),
         desktops: desktops,
+        leftDrawer: const LeftDrawerPage(),
+        rightDrawer: const RightDrawerPage(),
+        topDrawer: const NotificationsDrawerPage(),
       ),
     );
   }

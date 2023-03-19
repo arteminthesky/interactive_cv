@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LinkedInApplication extends Application {
-  LinkedInApplication(this.url);
+  const LinkedInApplication(this.url);
 
   final String url;
 

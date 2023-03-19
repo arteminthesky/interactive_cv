@@ -19,9 +19,7 @@ class AppWidget extends StatelessWidget {
           AppIcon(
             color: app.appIcon.backgroundColor ?? Colors.white,
             gradient: app.appIcon.gradient,
-            child: _AppIconSelector(
-              app: app.appIcon,
-            ),
+            child: app.buildIcon(context),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 5),
@@ -35,49 +33,6 @@ class AppWidget extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _AppIconSelector extends StatelessWidget {
-  const _AppIconSelector({
-    Key? key,
-    required this.app,
-  }) : super(key: key);
-
-  final App app;
-
-  @override
-  Widget build(BuildContext context) {
-    switch (app.name) {
-      case 'Calendar':
-        return const CalendarAppIcon();
-      default:
-        return _DefaultIcon(
-          app: app,
-        );
-    }
-  }
-}
-
-class _DefaultIcon extends StatelessWidget {
-  const _DefaultIcon({
-    Key? key,
-    required this.app,
-  }) : super(key: key);
-
-  final App app;
-
-  @override
-  Widget build(BuildContext context) {
-    if (app.icon == '') return const Offstage();
-    return Padding(
-      padding: EdgeInsets.all(app.iconPadding?.toDouble() ?? 0.0),
-      child: Image(
-        image: AssetImage(app.icon),
-        fit: BoxFit.cover,
-        color: app.imageColor,
       ),
     );
   }

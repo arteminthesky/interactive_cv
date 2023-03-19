@@ -5,6 +5,9 @@ import 'package:app_base/app_base.dart';
 import 'package:flutter/widgets.dart';
 
 abstract class OverlayApplication extends Application {
+
+  OverlayApplication();
+
   late final _overlayEntry = OverlayEntry(
     builder: _buildApp,
   );

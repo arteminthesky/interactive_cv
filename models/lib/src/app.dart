@@ -3,6 +3,7 @@ import 'package:models/src/desktop.dart';
 
 class App extends DesktopItem {
   final String icon;
+  final String? package;
   final int? iconPadding;
   final String name;
   final String? route;
@@ -13,6 +14,7 @@ class App extends DesktopItem {
   App(
     this.icon,
     this.name, {
+    this.package,
     this.route,
     this.iconPadding,
     this.gradient,
