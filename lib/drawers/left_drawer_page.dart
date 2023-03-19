@@ -26,8 +26,8 @@ class TopDrawerState {
   int get hashCode => offset.hashCode ^ animationState.hashCode;
 }
 
-class TopDrawerController extends ValueNotifier<TopDrawerState> {
-  TopDrawerController(super.value);
+class TopDrawerStateController extends ValueNotifier<TopDrawerState> {
+  TopDrawerStateController(super.value);
 }
 
 class _LeftDrawerController extends StatefulWidget {
@@ -43,7 +43,7 @@ class _LeftDrawerController extends StatefulWidget {
 }
 
 class _LeftDrawerControllerState extends State<_LeftDrawerController> {
-  final TopDrawerController topDrawerController = TopDrawerController(
+  final TopDrawerStateController topDrawerController = TopDrawerStateController(
     TopDrawerState(Offset.zero, null),
   );
 

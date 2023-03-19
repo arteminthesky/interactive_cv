@@ -58,6 +58,7 @@ class _DesktopPageState extends State<DesktopPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
+      extendBodyBehindAppBar: true,
       body: IPhoneDesktopPageView(
         wallpaper: Wallpaper('assets/wallpapers/wp_1.jpg'),
         desktops: desktops,

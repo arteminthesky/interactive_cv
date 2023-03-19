@@ -18,7 +18,7 @@ class SearchDrawer extends StatefulWidget {
   }) : super(key: key);
 
   final OverlayEntry entry;
-  final TopDrawerController controller;
+  final TopDrawerStateController controller;
   final List<Widget> slivers;
 
   @override

@@ -3,10 +3,12 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:iphone_desktop/drawers/left_drawer_page.dart';
+import 'package:iphone_desktop/drawers/notifications_drawer.dart';
 import 'package:iphone_desktop/drawers/right_drawer_page.dart';
 import 'package:iphone_desktop/iphone_wallpaper.dart';
 import 'package:iphone_desktop/widgets/widgets.dart';
 import 'package:models/models.dart';
+import 'package:platform/platform.dart' as platform;
 
 class IPhoneDesktopPageView extends StatefulWidget {
   const IPhoneDesktopPageView({
@@ -290,6 +292,12 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
             ),
           ),
         ),
+        if (platform.instance.isDesktop)
+          const TopDrawerController(
+            scrimColor: Colors.transparent,
+            edgeDragHeight: 100,
+            child: NotificationsDrawerPage(),
+          ),
       ],
     );
   }
