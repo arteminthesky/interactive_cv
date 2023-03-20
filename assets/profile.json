@@ -58,6 +58,16 @@
         "year": 2023
       },
       "activity_kind": "Development of cross-platform applications on Flutter. Android Application Development."
+    },
+    {
+      "company_name": "Yandex",
+      "company_logo": "https://raw.githubusercontent.com/arteminthesky/iphone_desktop/master/cv_app/assets/ya.png",
+      "link": "https://ya.ru/",
+      "start_date": {
+        "month": 2,
+        "year": 2023
+      },
+      "activity_kind": "Mobile Application Developer"
     }
   ]
 }
