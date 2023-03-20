@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iphone_desktop/constants.dart';
-import 'package:platform/platform.dart' as platform;
+import 'package:platform_utils/platform_utils.dart' as platform;
 import 'package:window/window.dart';
 
 class WindowConfiguration {

@@ -1,0 +1,63 @@
+{
+  "name": "Artem Artemov",
+  "bio": "Paranoid programmer \uD83E\uDD2A",
+  "avatar": "https://www.nicepng.com/png/full/145-1451818_drawing-adventure-bmo-adventure-time-bmo-drawing.png",
+  "github_url": "https://github.com/iKrupp",
+  "telegram": "https://t.me/akiberq",
+  "email": "akiberq@gmail.com",
+  "age": 22,
+  "sex": "male",
+  "country": "Russia \uD83C\uDDF7\uD83C\uDDFA",
+  "about_me": "",
+  "skills": [
+    "Flutter",
+    "Dart",
+    "OOP",
+    "Git",
+    "SQL",
+    "Android",
+    "Java"
+  ],
+  "work_experience": [
+    {
+      "company_name": "Freelance",
+      "company_logo": "https://uploads-ssl.webflow.com/5c29380b1110ec92a203aa84/5c4406f679dc69b549b48fa6_p17s2tfgc31jte13d51pea1l2oblr3.png",
+      "start_date": {
+        "month": 9,
+        "year": 2016
+      },
+      "end_date": {
+        "month": 11,
+        "year": 2017
+      },
+      "activity_kind": "Android application development."
+    },
+    {
+      "company_name": "Glance Tech, Inc",
+      "company_logo": "https://media.licdn.com/dms/image/C560BAQEBNrwj2MidtQ/company-logo_200_200/0?e=2159024400&v=beta&t=5B-qy8TcvI7WEmQ1hQj3_64OXep_kvY0KKAZFeVTvrE",
+      "start_date": {
+        "month": 11,
+        "year": 2017
+      },
+      "end_date": {
+        "month": 4,
+        "year": 2018
+      },
+      "activity_kind": "Development of an android application for controlling wall clocks using Bluetooth Low Energy technology."
+    },
+    {
+      "company_name": "Mercury Development, LLC",
+      "company_logo": "https://media.licdn.com/dms/image/C4E0BAQHTLk6T5Eleow/company-logo_200_200/0/1676570872742?e=2147483647&v=beta&t=94lGLSNwkj4zH2flZeWmeLtkKNHk4NAZ4hdtzF-eoR4",
+      "link": "https://mercdev.com/",
+      "start_date": {
+        "month": 5,
+        "year": 2018
+      },
+      "end_date": {
+        "month": 2,
+        "year": 2023
+      },
+      "activity_kind": "Development of cross-platform applications on Flutter. Android Application Development."
+    }
+  ]
+}
