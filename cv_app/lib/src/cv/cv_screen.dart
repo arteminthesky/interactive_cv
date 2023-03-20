@@ -32,46 +32,50 @@ class _CvScreenState extends State<CvScreen> {
   Widget build(BuildContext context) {
     return CvTheme(
       themes: themes,
-      child: Scaffold(body: LayoutBuilder(
-        builder: (context, constraints) {
-          bool isVerticalLayout = constraints.maxWidth <= 500;
+      child: Scaffold(
+        body: SafeArea(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              bool isVerticalLayout = constraints.maxWidth <= 500;
 
-          Widget cvWidget = CvWidget(
-            key: cvWidgetKey,
-            profile: _profile,
-          );
+              Widget cvWidget = CvWidget(
+                key: cvWidgetKey,
+                profile: _profile,
+              );
 
-          Widget themePicker = const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: CvThemePicker(),
-          );
+              Widget themePicker = const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: CvThemePicker(),
+              );
 
-          return SingleChildScrollView(
-            child: Flex(
-              direction: isVerticalLayout ? Axis.vertical : Axis.horizontal,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (!isVerticalLayout) const Spacer(),
-                if (isVerticalLayout) themePicker,
-                SizedBox(
-                  width: isVerticalLayout ? constraints.maxWidth : 500,
-                  child: cvWidget,
-                ),
-                if (!isVerticalLayout)
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Align(
-                        alignment: Alignment.topRight,
-                        child: themePicker,
-                      ),
+              return SingleChildScrollView(
+                child: Flex(
+                  direction: isVerticalLayout ? Axis.vertical : Axis.horizontal,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (!isVerticalLayout) const Spacer(),
+                    if (isVerticalLayout) themePicker,
+                    SizedBox(
+                      width: isVerticalLayout ? constraints.maxWidth : 500,
+                      child: cvWidget,
                     ),
-                  ),
-              ],
-            ),
-          );
-        },
-      )),
+                    if (!isVerticalLayout)
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Align(
+                            alignment: Alignment.topRight,
+                            child: themePicker,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ),
     );
   }
 }

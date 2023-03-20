@@ -21,7 +21,7 @@
   "work_experience": [
     {
       "company_name": "Freelance",
-      "company_logo": "https://uploads-ssl.webflow.com/5c29380b1110ec92a203aa84/5c4406f679dc69b549b48fa6_p17s2tfgc31jte13d51pea1l2oblr3.png",
+      "company_logo": "https://raw.githubusercontent.com/arteminthesky/iphone_desktop/master/cv_app/assets/android.png",
       "start_date": {
         "month": 9,
         "year": 2016
@@ -47,7 +47,7 @@
     },
     {
       "company_name": "Mercury Development, LLC",
-      "company_logo": "https://media.licdn.com/dms/image/C4E0BAQHTLk6T5Eleow/company-logo_200_200/0/1676570872742?e=2147483647&v=beta&t=94lGLSNwkj4zH2flZeWmeLtkKNHk4NAZ4hdtzF-eoR4",
+      "company_logo": "https://raw.githubusercontent.com/arteminthesky/iphone_desktop/master/cv_app/assets/md.jpg",
       "link": "https://mercdev.com/",
       "start_date": {
         "month": 5,
