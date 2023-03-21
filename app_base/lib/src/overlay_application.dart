@@ -1,22 +1,18 @@
-import 'dart:math';
 import 'dart:ui';
 
 import 'package:app_base/app_base.dart';
 import 'package:flutter/widgets.dart';
 
 abstract class OverlayApplication extends Application {
-
   OverlayApplication();
 
-  late final _overlayEntry = OverlayEntry(
-    builder: _buildApp,
-  );
+  OverlayEntry? _overlayEntry;
 
   final GlobalKey<_AppTransitionState> _appTransitionKey = GlobalKey();
 
   Widget _buildApp(BuildContext context) {
     return _Closable(
-      onClose: _overlayEntry.remove,
+      onClose: _overlayEntry!.remove,
       child: _AppTransition(
         key: _appTransitionKey,
         builder: buildApp,
@@ -26,15 +22,34 @@ abstract class OverlayApplication extends Application {
 
   Widget buildApp(BuildContext context);
 
+  OverlayEntry _createOverlayEntry(BuildContext context) {
+    var mediaQuery = MediaQuery.of(context);
+
+    return OverlayEntry(
+      builder: _wrapWithMediaQuery(mediaQuery),
+    );
+  }
+
+  WidgetBuilder _wrapWithMediaQuery(MediaQueryData mediaQueryData) {
+    return (context) {
+      return MediaQuery(
+        data: mediaQueryData,
+        child: _buildApp(context),
+      );
+    };
+  }
+
   void close(BuildContext context) {
     var state = context.findAncestorStateOfType<_AppTransitionState>()!;
 
-    state.close().then((_) => _overlayEntry.remove());
+    state.close().then((_) => _overlayEntry!.remove());
   }
 
   @override
   Future<void> open(BuildContext context, {String? deepLink}) {
-    Overlay.of(context).insert(_overlayEntry);
+    _overlayEntry = _createOverlayEntry(context);
+
+    Overlay.of(context).insert(_overlayEntry!);
     return Future.value();
   }
 }
@@ -101,7 +116,6 @@ class _Closable extends StatefulWidget {
 
 class _ClosableState extends State<_Closable>
     with SingleTickerProviderStateMixin {
-  final ValueNotifier<double> _translateListenable = ValueNotifier(0);
   AnimationController? _closeController;
 
   @override
@@ -111,7 +125,21 @@ class _ClosableState extends State<_Closable>
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
+
+    _closeController!.addListener(() {
+      if (_closeController!.isCompleted) {
+        widget.onClose();
+      }
+    });
   }
+
+  @override
+  void dispose() {
+    _closeController?.dispose();
+    super.dispose();
+  }
+
+  double get _width => MediaQuery.of(context).size.width;
 
   @override
   Widget build(BuildContext context) {
@@ -121,10 +149,10 @@ class _ClosableState extends State<_Closable>
       children: [
         RepaintBoundary(
           child: AnimatedBuilder(
-            animation: _translateListenable,
+            animation: _closeController!,
             builder: (context, child) {
               return Transform.translate(
-                offset: Offset(_translateListenable.value, 0),
+                offset: Offset(_closeController!.value * _width, 0),
                 child: child,
               );
             },
@@ -136,18 +164,13 @@ class _ClosableState extends State<_Closable>
         Align(
           alignment: Alignment.centerLeft,
           child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
+            behavior: HitTestBehavior.translucent,
             supportedDevices: const {
               PointerDeviceKind.touch,
               PointerDeviceKind.mouse,
             },
-            onHorizontalDragUpdate: (update) {
-              _translateListenable.value =
-                  max(0, _translateListenable.value + update.delta.dx);
-            },
-            onHorizontalDragEnd: (details) {
-              _closeController?.forward();
-            },
+            onHorizontalDragUpdate: _move,
+            onHorizontalDragEnd: _settle,
             child: SizedBox(
               height: MediaQuery.of(context).size.height,
               width: 50,
@@ -156,5 +179,29 @@ class _ClosableState extends State<_Closable>
         ),
       ],
     );
+  }
+
+  void _close() {
+    _closeController!.forward();
+  }
+
+  void _return() {
+    _closeController!.reverse();
+  }
+
+  void _move(DragUpdateDetails update) {
+    _closeController!.value += update.primaryDelta! / _width;
+  }
+
+  void _settle(DragEndDetails details) {
+    if (details.velocity.pixelsPerSecond.dx.abs() >= 365) {
+      double visualVelocity = details.velocity.pixelsPerSecond.dx / _width;
+
+      _closeController!.fling(velocity: visualVelocity);
+    } else if (_closeController!.value < 0.2) {
+      _return();
+    } else {
+      _close();
+    }
   }
 }
