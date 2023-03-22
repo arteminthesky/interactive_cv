@@ -36,7 +36,7 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
 
   double get _width => MediaQuery.of(context).size.width;
 
-  final _scrollPhysics = const BouncingScrollPhysics();
+  final _scrollPhysics = const ClampingScrollPhysics();
 
   @override
   void dispose() {

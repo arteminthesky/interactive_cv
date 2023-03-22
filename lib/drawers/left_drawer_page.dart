@@ -92,15 +92,10 @@ class _LeftDrawerControllerState extends State<_LeftDrawerController> {
   Widget build(BuildContext context) {
     return Listener(
       onPointerDown: (down) {
-        print('down');
         _gestureStart = down.localPosition;
       },
       onPointerMove: (move) {
-        print('move');
         var delta = move.localPosition - _gestureStart;
-        print(delta);
-        print(_scrollController.offset);
-        print(topDrawerController.value.animationState);
         if (delta.dy >= 0 &&
             _scrollController.positions.isNotEmpty &&
             topDrawerController.value.animationState !=
