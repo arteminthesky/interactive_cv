@@ -19,8 +19,8 @@ class DesktopWidget extends StatelessWidget {
                     for (int j = 0; j < 4; j++)
                       desktop.applications.length > i * 4 + j
                           ? Expanded(
-                              child: _WidgetSelector(
-                                item: desktop.applications[i * 4 + j],
+                              child: AppWidget(
+                                app: desktop.applications[i * 4 + j],
                               ),
                             )
                           : const Expanded(child: Offstage()),
@@ -31,19 +31,5 @@ class DesktopWidget extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class _WidgetSelector extends StatelessWidget {
-  const _WidgetSelector({
-    Key? key,
-    required this.item,
-  }) : super(key: key);
-
-  final Application item;
-
-  @override
-  Widget build(BuildContext context) {
-    return AppWidget(app: item);
   }
 }

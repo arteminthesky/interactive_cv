@@ -16,10 +16,13 @@ class AppWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          AppIcon(
-            color: app.appIcon.backgroundColor ?? Colors.white,
-            gradient: app.appIcon.gradient,
-            child: app.buildIcon(context),
+          Hero(
+            tag: app.appIcon.name,
+            child: AppIcon(
+              color: app.appIcon.backgroundColor ?? Colors.white,
+              gradient: app.appIcon.gradient,
+              child: app.buildIcon(context),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 5),

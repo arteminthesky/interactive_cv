@@ -2,7 +2,7 @@ import 'package:app_base/app_base.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class GitHubApplication extends OverlayApplication {
+class GitHubApplication extends RouteApplication {
 
   GitHubApplication();
 
@@ -16,12 +16,12 @@ class GitHubApplication extends OverlayApplication {
       );
 
   @override
+  bool get hero => true;
+
+  @override
   Widget buildApp(BuildContext context) {
-    return const CupertinoApp(
+    return CupertinoApp(
       home: CupertinoPageScaffold(
-        navigationBar: CupertinoNavigationBar(
-          middle: Text('GitHub'),
-        ),
         child: Scaffold(),
       ),
     );

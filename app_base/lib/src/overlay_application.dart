@@ -1,9 +1,11 @@
 import 'dart:ui';
 
 import 'package:app_base/app_base.dart';
+import 'package:app_base/src/build_application_mixin.dart';
 import 'package:flutter/widgets.dart';
 
-abstract class OverlayApplication extends Application {
+abstract class OverlayApplication extends Application
+    with BuildApplicationMixin {
   OverlayApplication();
 
   OverlayEntry? _overlayEntry;
@@ -19,8 +21,6 @@ abstract class OverlayApplication extends Application {
       ),
     );
   }
-
-  Widget buildApp(BuildContext context);
 
   OverlayEntry _createOverlayEntry(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);
