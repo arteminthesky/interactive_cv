@@ -11,7 +11,7 @@ dependencies:
     sdk: flutter
 
   app_base:
-    path: ../app_base
+    path: ../applications/app_base
 
 dev_dependencies:
   lints: ^2.0.0

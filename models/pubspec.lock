@@ -20,7 +20,7 @@ packages:
   app_base:
     dependency: "direct main"
     description:
-      path: "../app_base"
+      path: "../applications/app_base"
       relative: true
     source: path
     version: "0.0.1"

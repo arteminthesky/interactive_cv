@@ -21,16 +21,16 @@ dependencies:
   provider: 6.0.5
   
   app_base:
-    path: ./app_base
+    path: ./applications/app_base
 
   linkedin_application:
-    path: ./linkedin_application
+    path: ./applications/linkedin_application
 
   github_app:
-    path: ./github_app
+    path: ./applications/github_app
 
   gmail:
-    path: ./gmail
+    path: ./applications/gmail
 
   platform_utils:
     path: ./platform_utils
@@ -39,7 +39,7 @@ dependencies:
     path: ./window
 
   cv_app:
-    path: ./cv_app
+    path: ./applications/cv_app
 
 dev_dependencies:
   flutter_test:

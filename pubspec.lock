@@ -4,7 +4,7 @@ packages:
   app_base:
     dependency: "direct main"
     description:
-      path: app_base
+      path: "applications/app_base"
       relative: true
     source: path
     version: "0.0.1"
@@ -67,7 +67,7 @@ packages:
   cv_app:
     dependency: "direct main"
     description:
-      path: cv_app
+      path: "applications/cv_app"
       relative: true
     source: path
     version: "0.0.1"
@@ -129,14 +129,14 @@ packages:
   github_app:
     dependency: "direct main"
     description:
-      path: github_app
+      path: "applications/github_app"
       relative: true
     source: path
     version: "0.0.1"
   gmail:
     dependency: "direct main"
     description:
-      path: gmail
+      path: "applications/gmail"
       relative: true
     source: path
     version: "0.0.1"
@@ -191,7 +191,7 @@ packages:
   linkedin_application:
     dependency: "direct main"
     description:
-      path: linkedin_application
+      path: "applications/linkedin_application"
       relative: true
     source: path
     version: "0.0.1"
