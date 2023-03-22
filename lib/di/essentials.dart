@@ -12,32 +12,33 @@ abstract class Essentials {
 }
 
 class _BaseEssentials extends Essentials {
+  _BaseEssentials() : super._();
 
-  _BaseEssentials(): super._();
+  final ApplicationLoader _applicationLoader = BaseApplicationLoader();
 
   Profile? _profile;
   List<Application>? _applications;
 
   @override
   Future<void> load() async {
-    _profile = Profile.fromJson(jsonDecode(
-      await rootBundle.loadString('assets/profile.json'),
-    ));
-    _initApplications();
+    await _initProfile();
+
+    assert(_profile != null);
+    await _initApplications();
   }
 
-  void _initApplications() {
-    final applications = <Application>[];
+  Future<void> _initProfile() async {
+    _profile = await _loadProfile();
+  }
 
-    applications.add(CVApplication(profile));
-    if(profile.githubUrl != null) {
-      applications.add(GitHubApplication());
-    }
-    if(profile.linkedin != null) {
-      applications.add(LinkedInApplication(profile.linkedin!));
-    }
+  Future<Profile> _loadProfile() async {
+    return Profile.fromJson(jsonDecode(
+      await rootBundle.loadString('assets/profile.json'),
+    ));
+  }
 
-    _applications = applications;
+  Future<void> _initApplications() async {
+    _applications = await _applicationLoader.load(profile);
   }
 
   @override
@@ -45,6 +46,4 @@ class _BaseEssentials extends Essentials {
 
   @override
   List<Application> get applications => _applications!;
-
-
 }
