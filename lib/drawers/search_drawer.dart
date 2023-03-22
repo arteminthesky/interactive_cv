@@ -120,7 +120,6 @@ class _SearchDrawerState extends State<SearchDrawer>
               SliverToBoxAdapter(
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height,
-                  child: const Placeholder(),
                 ),
               ),
               ...widget.slivers,
@@ -135,7 +134,6 @@ class _SearchDrawerState extends State<SearchDrawer>
                         TopDrawerAnimationState.end,
                       );
                     },
-                    child: const Placeholder(),
                   ),
                 ),
               ),
