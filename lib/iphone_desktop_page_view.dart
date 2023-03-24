@@ -295,7 +295,7 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
             ),
           ),
         ),
-        if (platform.instance.isDesktop)
+        if (platform.instance.isDesktop || platform.instance.isWeb)
           RepaintBoundary(
             key: const ValueKey('top_drawer_repaint_boundary'),
             child: TopDrawerController(

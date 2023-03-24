@@ -22,8 +22,6 @@ class _BaseEssentials extends Essentials {
   @override
   Future<void> load() async {
     await _initProfile();
-
-    assert(_profile != null);
     await _initApplications();
   }
 
@@ -38,6 +36,7 @@ class _BaseEssentials extends Essentials {
   }
 
   Future<void> _initApplications() async {
+    assert(_profile != null);
     _applications = await _applicationLoader.load(profile);
   }
 

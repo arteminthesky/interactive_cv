@@ -18,13 +18,12 @@ void main() async {
   WindowConfiguration.apply();
   final essentials = Essentials();
   await essentials.load();
-  runApp(MyApp(
-    essentials: essentials,
-  ));
+
+  runApp(Application(essentials: essentials));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({
+class Application extends StatelessWidget {
+  const Application({
     super.key,
     required this.essentials,
   });
