@@ -3,6 +3,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:github_fidget/github_fidget.dart';
 import 'package:iphone_desktop/drawers/search_drawer.dart';
 import 'package:iphone_desktop/widgets/widgets.dart';
 
@@ -60,12 +61,7 @@ class _LeftDrawerControllerState extends State<_LeftDrawerController> {
           sliver: SliverToBoxAdapter(
             child: Padding(
               padding: EdgeInsets.all(15.0),
-              child: AspectRatio(
-                aspectRatio: 2,
-                child: IosFidget(
-                  child: _WeatherWidget(),
-                ),
-              ),
+              child: WeatherFidget(),
             ),
           ),
         ),
@@ -111,12 +107,10 @@ class _LeftDrawerControllerState extends State<_LeftDrawerController> {
         }
       },
       child: ScrollConfiguration(
-        behavior: ScrollConfiguration.of(context).copyWith(
-          dragDevices: {
-            PointerDeviceKind.touch,
-            PointerDeviceKind.mouse,
-          }
-        ),
+        behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
+          PointerDeviceKind.touch,
+          PointerDeviceKind.mouse,
+        }),
         child: PrimaryScrollController(
           automaticallyInheritForPlatforms: TargetPlatform.values.toSet(),
           controller: _scrollController,
@@ -174,29 +168,12 @@ class _LeftDrawerPageBody extends StatelessWidget {
           SliverPadding(
             padding: EdgeInsets.all(10.0),
             sliver: SliverToBoxAdapter(
-              child: WeatherFidget(),
+              child: GithubFidget(
+                githubUser: 'arteminthesky',
+                repo: 'iphone_desktop',
+              ),
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class _WeatherWidget extends StatelessWidget {
-  const _WeatherWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: Colors.grey.withOpacity(0.5),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text('Weather'),
-          Text('Good'),
         ],
       ),
     );

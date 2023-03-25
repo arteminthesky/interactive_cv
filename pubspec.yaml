@@ -41,6 +41,9 @@ dependencies:
   cv_app:
     path: ./applications/cv_app
 
+  github_fidget:
+    path: ./fidgets/github_fidget
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
