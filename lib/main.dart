@@ -72,16 +72,12 @@ class _DesktopPageState extends State<DesktopPage> {
   @override
   Widget build(BuildContext context) {
     var essentials = context.watch<Essentials>();
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      extendBodyBehindAppBar: true,
-      body: IPhoneDesktopPageView(
-        wallpaper: const Wallpaper('assets/wallpapers/wp_1.jpg'),
-        desktops: [Desktop(essentials.applications)],
-        leftDrawer: const LeftDrawerPage(),
-        rightDrawer: const RightDrawerPage(),
-        topDrawer: const NotificationsDrawerPage(),
-      ),
+    return IPhoneDesktopPageView(
+      wallpaper: const Wallpaper('assets/wallpapers/wp_1.jpg'),
+      desktops: [Desktop(essentials.applications)],
+      leftDrawer: const LeftDrawerPage(),
+      rightDrawer: const RightDrawerPage(),
+      topDrawer: const NotificationsDrawerPage(),
     );
   }
 }
