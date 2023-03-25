@@ -52,7 +52,7 @@ class BaseApplicationLoader extends ApplicationLoader {
 
   Application? _ensureCreateGmail(Profile profile) {
     if (profile.email != null) {
-      return GmailApplication();
+      return GmailApplication(profile.email!);
     }
     return null;
   }

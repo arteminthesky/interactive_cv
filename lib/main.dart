@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:iphone_desktop/data/desktops.dart';
 import 'package:iphone_desktop/di/di.dart';
 import 'package:iphone_desktop/drawers/left_drawer_page.dart';
 import 'package:iphone_desktop/drawers/notifications_drawer.dart';
@@ -16,10 +15,13 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   WindowConfiguration.apply();
+
   final essentials = Essentials();
   await essentials.load();
 
-  runApp(Application(essentials: essentials));
+  runApp(
+    Application(essentials: essentials),
+  );
 }
 
 class Application extends StatelessWidget {
@@ -36,7 +38,7 @@ class Application extends StatelessWidget {
       return Provider.value(
         value: essentials,
         child: Provider<SiriSuggestions>.value(
-          value: siriSuggestions,
+          value: SiriSuggestions([]),
           child: CupertinoApp(
             color: Colors.transparent,
             builder: (context, child) {

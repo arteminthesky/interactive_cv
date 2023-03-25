@@ -1,7 +1,12 @@
 import 'package:app_base/app_base.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class GmailApplication extends Application {
+  GmailApplication(this.email);
+
+  final String email;
+
   @override
   App get appIcon => App(
         'assets/gmail.png',
@@ -17,13 +22,14 @@ class GmailApplication extends Application {
         return CupertinoActionSheet(
           actions: [
             CupertinoActionSheetAction(
-              onPressed: () {},
+              onPressed: () {
+                launchUrl(Uri.parse('mailto:$email'));
+                _close(context);
+              },
               child: const Text('Send a message'),
             ),
             CupertinoActionSheetAction(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              onPressed: () => _close(context),
               isDestructiveAction: true,
               child: const Text('Close'),
             ),
@@ -31,5 +37,9 @@ class GmailApplication extends Application {
         );
       },
     );
+  }
+
+  void _close(BuildContext context) {
+    Navigator.of(context).pop();
   }
 }
