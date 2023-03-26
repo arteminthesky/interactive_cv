@@ -11,8 +11,6 @@ class IoWindowManager extends WindowManagerBase {
   Future<void> init() async {
     if (_isDesktop) {
       await windowManager.ensureInitialized();
-      windowManager.waitUntilReadyToShow(
-          WindowOptions(backgroundColor: Colors.transparent));
     }
   }
 
