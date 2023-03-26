@@ -44,6 +44,8 @@ dependencies:
   github_fidget:
     path: ./fidgets/github_fidget
 
+  fast_noise: ^1.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

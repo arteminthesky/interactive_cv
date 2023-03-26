@@ -1,7 +1,6 @@
 import 'dart:io';
-import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:window/src/window_manager_base.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -12,6 +11,8 @@ class IoWindowManager extends WindowManagerBase {
   Future<void> init() async {
     if (_isDesktop) {
       await windowManager.ensureInitialized();
+      windowManager.waitUntilReadyToShow(
+          WindowOptions(backgroundColor: Colors.transparent));
     }
   }
 

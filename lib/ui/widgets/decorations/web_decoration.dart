@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/widgets.dart';
+import 'package:iphone_desktop/ui/widgets/background.dart';
 import 'package:iphone_desktop/ui/widgets/decorations/decorations.dart';
 
 class WebDecoration extends StatelessWidget {
@@ -8,13 +11,18 @@ class WebDecoration extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: const BoxDecoration(),
-      child: Center(
-        child: FittedBox(
-          fit: BoxFit.scaleDown,
-          child: IPhone14Decoration(
-            appBuilder: appBuilder,
+    if(window.physicalSize.aspectRatio < 1) {
+      return appBuilder(context, Size.infinite, EdgeInsets.zero);
+    }
+    return GrainBackground(
+      child: Padding(
+        padding: const EdgeInsets.all(50.0),
+        child: Center(
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: IPhone14Decoration(
+              appBuilder: appBuilder,
+            ),
           ),
         ),
       ),
