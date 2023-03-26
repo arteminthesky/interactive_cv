@@ -3,10 +3,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:iphone_desktop/iphone_wallpaper.dart';
-import 'package:iphone_desktop/widgets/top_drawer_scope.dart';
-import 'package:iphone_desktop/widgets/widgets.dart';
+import 'package:iphone_desktop/ui/widgets/top_drawer_scope.dart';
+import 'package:iphone_desktop/ui/widgets/widgets.dart';
 import 'package:models/models.dart';
-import 'package:platform_utils/platform_utils.dart' as platform;
 
 class IPhoneDesktopPageView extends StatefulWidget {
   const IPhoneDesktopPageView({

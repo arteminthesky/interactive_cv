@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import '../widgets/fidgets/fidgets.dart';
+import '../ui/widgets/fidgets/fidgets.dart';
 
 class RightDrawerPage extends StatelessWidget {
   const RightDrawerPage({Key? key}) : super(key: key);

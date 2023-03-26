@@ -4,7 +4,7 @@ import 'package:app_base/app_base.dart';
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:iphone_desktop/widgets/base/base.dart';
+import 'package:iphone_desktop/ui/widgets/base/base.dart';
 import 'package:models/models.dart';
 
 import 'app_icons/app_icons.dart';
