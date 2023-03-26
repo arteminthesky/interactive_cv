@@ -45,6 +45,7 @@ class IPhone14Decoration extends StatelessWidget {
           child: RepaintBoundary(
             key: const ValueKey('screen_repaint_boundary'),
             child: ClipSmoothRect(
+              clipBehavior: Clip.antiAliasWithSaveLayer,
               radius: SmoothBorderRadius(
                 cornerRadius: 50,
                 cornerSmoothing: 0.5,
