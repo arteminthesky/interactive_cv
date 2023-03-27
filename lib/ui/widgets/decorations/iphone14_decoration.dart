@@ -24,6 +24,12 @@ class IPhone14Decoration extends StatelessWidget {
             strokeAlign: BorderSide.strokeAlignOutside,
           ),
         ),
+        shadows: [
+          BoxShadow(
+            color: Colors.white.withOpacity(0.5),
+            blurRadius: 60,
+          )
+        ]
       ),
       child: Padding(
         padding: const EdgeInsets.all(6),
@@ -62,11 +68,11 @@ class IPhone14Decoration extends StatelessWidget {
                     ),
                   ),
                   const Positioned(
-                    top: 5,
+                    top: 7,
                     child: _Notch(),
                   ),
                   const Positioned(
-                    bottom: 5,
+                    bottom: 7,
                     child: _GestureIndicator(),
                   ),
                 ],

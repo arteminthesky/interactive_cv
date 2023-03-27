@@ -14,7 +14,7 @@ class WebDecoration extends StatelessWidget {
     if(window.physicalSize.aspectRatio < 1) {
       return appBuilder(context, Size.infinite, EdgeInsets.zero);
     }
-    return GrainBackground(
+    return GradientBackground(
       child: Padding(
         padding: const EdgeInsets.all(50.0),
         child: Center(
