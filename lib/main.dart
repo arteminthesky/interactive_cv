@@ -75,7 +75,7 @@ class _DesktopPageState extends State<DesktopPage> {
   Widget build(BuildContext context) {
     var essentials = context.watch<Essentials>();
     return IPhoneDesktopPageView(
-      wallpaper: const Wallpaper('assets/wallpapers/wp_1.jpg'),
+      wallpaper: const Wallpaper('assets/wallpapers/wp_1.webp'),
       desktops: [Desktop(essentials.applications)],
       leftDrawer: const LeftDrawerPage(),
       rightDrawer: const RightDrawerPage(),
