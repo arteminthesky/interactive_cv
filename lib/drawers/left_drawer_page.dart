@@ -4,8 +4,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:github_fidget/github_fidget.dart';
-import 'package:iphone_desktop/drawers/search_drawer.dart';
-import 'package:iphone_desktop/ui/widgets/widgets.dart';
+import 'package:interactive_cv/drawers/search_drawer.dart';
+import 'package:interactive_cv/ui/widgets/fidgets/fidgets.dart';
 
 enum TopDrawerAnimationState { end, begin, idle, active }
 

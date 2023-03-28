@@ -2,8 +2,7 @@ library decorations;
 
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
-import 'package:iphone_desktop/constants.dart';
-import 'package:iphone_desktop/main.dart';
+import 'package:interactive_cv/constants.dart';
 
 part 'iphone14_decoration.dart';
 

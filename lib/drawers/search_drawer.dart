@@ -3,7 +3,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
-import 'package:iphone_desktop/drawers/left_drawer_page.dart';
+import 'package:interactive_cv/drawers/left_drawer_page.dart';
 
 const _snapDuration = Duration(milliseconds: 600);
 const _animationDuration = Duration(milliseconds: 300);

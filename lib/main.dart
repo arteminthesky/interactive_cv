@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:iphone_desktop/di/di.dart';
-import 'package:iphone_desktop/drawers/left_drawer_page.dart';
-import 'package:iphone_desktop/drawers/notifications_drawer.dart';
-import 'package:iphone_desktop/drawers/right_drawer_page.dart';
-import 'package:iphone_desktop/iphone_desktop_page_view.dart';
-import 'package:iphone_desktop/ui/widgets/decorations/decorations.dart';
-import 'package:iphone_desktop/ui/widgets/decorations/web_decoration.dart';
-import 'package:iphone_desktop/window_configuration.dart';
+import 'package:interactive_cv/di/di.dart';
+import 'package:interactive_cv/drawers/left_drawer_page.dart';
+import 'package:interactive_cv/drawers/notifications_drawer.dart';
+import 'package:interactive_cv/drawers/right_drawer_page.dart';
+import 'package:interactive_cv/iphone_desktop_page_view.dart';
+import 'package:interactive_cv/ui/widgets/decorations/decorations.dart';
+import 'package:interactive_cv/ui/widgets/decorations/web_decoration.dart';
+import 'package:interactive_cv/window_configuration.dart';
+
 import 'package:models/models.dart';
 import 'package:platform_utils/platform_utils.dart' as platform;
 import 'package:provider/provider.dart';

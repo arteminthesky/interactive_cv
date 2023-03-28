@@ -2,10 +2,11 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:iphone_desktop/iphone_wallpaper.dart';
-import 'package:iphone_desktop/ui/widgets/top_drawer_scope.dart';
-import 'package:iphone_desktop/ui/widgets/widgets.dart';
+import 'package:interactive_cv/ui/widgets/top_drawer_scope.dart';
+import 'package:interactive_cv/ui/widgets/widgets.dart';
 import 'package:models/models.dart';
+
+import 'iphone_wallpaper.dart';
 
 class IPhoneDesktopPageView extends StatefulWidget {
   const IPhoneDesktopPageView({
@@ -117,7 +118,8 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
                               var scrollPosition = _desktopsController.position;
                               if (!scrollPosition.hasPixels ||
                                   scrollPosition.hasContentDimensions) {
-                                currentPageValue = _desktopsController.page ?? 1;
+                                currentPageValue =
+                                    _desktopsController.page ?? 1;
                               }
 
                               if (position == 1 && currentPageValue < 1) {
@@ -127,7 +129,8 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
                                 scale = 1 - (0.2 * pageFraction);
                               } else if (position == length - 2 &&
                                   currentPageValue > length - 2) {
-                                var pageFraction = length - 2 - currentPageValue;
+                                var pageFraction =
+                                    length - 2 - currentPageValue;
                                 translationOffset =
                                     Offset(_width * -pageFraction, 0);
                                 scale = 1 - (0.2 * -pageFraction);
@@ -216,7 +219,8 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
                   onPanUpdate: (update) {
                     leftDrawerCurrentPosition =
                         leftDrawerStartPosition - update.globalPosition.dx;
-                    _desktopsController.jumpTo(max(0, leftDrawerCurrentPosition));
+                    _desktopsController
+                        .jumpTo(max(0, leftDrawerCurrentPosition));
                   },
                   onPanDown: (details) {
                     unlockScroll();
@@ -226,7 +230,8 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
                     unlockScroll();
                     var position = _desktopsController.position;
                     if (position is ScrollPositionWithSingleContext) {
-                      position.goBallistic(-details.velocity.pixelsPerSecond.dx);
+                      position
+                          .goBallistic(-details.velocity.pixelsPerSecond.dx);
                     }
                     leftDrawerCurrentPosition = 0;
                   },
@@ -287,7 +292,8 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
                     unlockScroll();
                     var position = _desktopsController.position;
                     if (position is ScrollPositionWithSingleContext) {
-                      position.goBallistic(-details.velocity.pixelsPerSecond.dx);
+                      position
+                          .goBallistic(-details.velocity.pixelsPerSecond.dx);
                     }
                     rightDrawerCurrentPosition = 0;
                   },

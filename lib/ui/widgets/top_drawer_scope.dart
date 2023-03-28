@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iphone_desktop/ui/widgets/base/base.dart';
+import 'package:interactive_cv/ui/widgets/base/base.dart';
 import 'package:platform_utils/platform_utils.dart' as platform;
 
 class TopDrawerScope extends StatelessWidget {

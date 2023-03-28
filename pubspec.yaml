@@ -1,5 +1,5 @@
-name: iphone_desktop
-description: iPhone desktop emulator
+name: interactive_cv
+description: iPhone-like interactive CV
 publish_to: 'none'
 
 version: 1.0.0+1
