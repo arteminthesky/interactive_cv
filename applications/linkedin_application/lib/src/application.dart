@@ -15,10 +15,13 @@ class LinkedInApplication extends Application {
   }
 
   @override
-  App get appIcon => App(
-        'assets/apps/linkedin.png',
-        'LinkedIn',
-        imageColor: Colors.white,
-        backgroundColor: Colors.blue,
+  ApplicationInfo get info => ApplicationInfo(
+        icon: ApplicationIcon(
+          iconResource: 'assets/apps/linkedin.png',
+          imageColor: Colors.white,
+          backgroundColor: Colors.blue,
+        ),
+        name: 'LinkedIn',
+        description: '',
       );
 }

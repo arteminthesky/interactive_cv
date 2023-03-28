@@ -1,23 +1,30 @@
+import 'package:app_base/src/models/application_info.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:models/models.dart';
+
+const double kDefaultAppIconPadding = 10;
 
 /// Describes logic for the application
 abstract class Application {
   const Application();
-  /// Description for the application icon
-  abstract final App appIcon;
+
+  /// Description for the application. Includes icon, name, description and other metadata
+  abstract final ApplicationInfo info;
 
   /// The way to open application
   Future<void> open(BuildContext context, {String? deepLink});
 
   Widget buildIcon(BuildContext context) {
-    if (appIcon.icon == '') return const Offstage();
+    var icon = info.icon;
+    if (icon.iconResource == '') return const Offstage();
+
     return Padding(
-      padding: EdgeInsets.all(appIcon.iconPadding?.toDouble() ?? 0.0),
+      padding: EdgeInsets.all(
+        icon.padding?.toDouble() ?? kDefaultAppIconPadding,
+      ),
       child: Image(
-        image: AssetImage(appIcon.icon, package: appIcon.package),
+        image: AssetImage(icon.iconResource, package: icon.package),
         fit: BoxFit.cover,
-        color: appIcon.imageColor,
+        color: icon.imageColor,
       ),
     );
   }

@@ -11,10 +11,13 @@ class CVApplication extends OverlayApplication {
   final Profile profile;
 
   @override
-  App get appIcon => App(
-        'none',
-        'CV',
-        package: 'cv_app',
+  ApplicationInfo get info => ApplicationInfo(
+        icon: ApplicationIcon(
+          iconResource: '',
+          package: 'cv_app',
+        ),
+        name: 'CV',
+        description: '',
       );
 
   @override

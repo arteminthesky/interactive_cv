@@ -8,13 +8,6 @@ class GmailApplication extends Application {
   final String email;
 
   @override
-  App get appIcon => App(
-        'assets/gmail.png',
-        'Gmail',
-        package: 'gmail',
-      );
-
-  @override
   Future<void> open(BuildContext context, {String? deepLink}) {
     return showCupertinoModalPopup(
       context: context,
@@ -42,4 +35,14 @@ class GmailApplication extends Application {
   void _close(BuildContext context) {
     Navigator.of(context).pop();
   }
+
+  @override
+  ApplicationInfo get info => ApplicationInfo(
+        icon: ApplicationIcon(
+          iconResource: 'assets/gmail.png',
+          package: 'gmail',
+        ),
+        name: 'Gmail',
+        description: '',
+      );
 }

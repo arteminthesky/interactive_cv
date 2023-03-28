@@ -7,13 +7,15 @@ class GitHubApplication extends RouteApplication {
   GitHubApplication();
 
   @override
-  App get appIcon => App(
-        'assets/apps/github.png',
-        'GitHub',
-        imageColor: Colors.white,
-        backgroundColor: Colors.black,
-        iconPadding: 10,
-      );
+  ApplicationInfo get info => ApplicationInfo(
+    icon: ApplicationIcon(
+      iconResource: 'assets/apps/github.png',
+      imageColor: Colors.white,
+      backgroundColor: Colors.black,
+    ),
+    name: 'GitHub',
+    description: '',
+  );
 
   @override
   bool get hero => true;

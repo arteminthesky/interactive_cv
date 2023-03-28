@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 abstract class RouteApplication extends Application with BuildApplicationMixin {
   Widget _wrapWithHero(BuildContext context) {
     return Hero(
-      tag: appIcon.name,
+      tag: info.name,
       child: buildApp(context),
     );
   }
