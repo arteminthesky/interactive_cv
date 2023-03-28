@@ -10,8 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  models:
-    path: ../../models
 
 dev_dependencies:
   flutter_test:
