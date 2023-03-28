@@ -11,7 +11,7 @@ class WorkExperienceSection extends StatelessWidget {
     return _Section(
       header: const SectionHeader('Work Experience'),
       body: StepWidget(
-        steps: workExperience.map((e) => WorkExpirienceItem(job: e)).toList(),
+        steps: workExperience.reversed.map((e) => WorkExpirienceItem(job: e)).toList(),
       ),
     );
   }

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 enum StepType {
@@ -90,7 +89,6 @@ abstract class StepColumnPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Size stepRowAreaSize = Size(width, size.height);
-    print(stepRowAreaSize);
     drawLine(canvas, stepRowAreaSize);
     drawStepIndicator(canvas, stepRowAreaSize);
   }
@@ -109,6 +107,14 @@ abstract class StepColumnPainter extends CustomPainter {
 
 class BeginStepColumnPainter extends StepColumnPainter {
   BeginStepColumnPainter(double width) : super._(width);
+
+  final Paint _indicatorColor = Paint()..color = Colors.lightGreenAccent;
+
+  @override
+  void drawStepIndicator(Canvas canvas, Size size) {
+    super.drawStepIndicator(canvas, size);
+    canvas.drawCircle(size.center(Offset.zero), 3, _indicatorColor);
+  }
 
   @override
   void drawLine(Canvas canvas, Size size) {
@@ -129,14 +135,6 @@ class MiddleStepColumnPainter extends StepColumnPainter {
 
 class EndStepColumnPainter extends StepColumnPainter {
   EndStepColumnPainter(double width) : super._(width);
-
-  Paint _indicatorColor = Paint()..color = Colors.lightGreenAccent;
-
-  @override
-  void drawStepIndicator(Canvas canvas, Size size) {
-    super.drawStepIndicator(canvas, size);
-    canvas.drawCircle(size.center(Offset.zero), 3, _indicatorColor);
-  }
 
   @override
   void drawLine(Canvas canvas, Size size) {

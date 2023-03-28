@@ -23,7 +23,7 @@
   "work_experience": [
     {
       "company_name": "Freelance",
-      "company_logo": "https://raw.githubusercontent.com/arteminthesky/iphone_desktop/master/cv_app/assets/android.png",
+      "company_logo": "https://raw.githubusercontent.com/arteminthesky/iphone_desktop/master/applications/cv_app/assets/android.png",
       "start_date": {
         "month": 9,
         "year": 2016
@@ -49,7 +49,7 @@
     },
     {
       "company_name": "Mercury Development, LLC",
-      "company_logo": "https://raw.githubusercontent.com/arteminthesky/iphone_desktop/master/cv_app/assets/md.jpg",
+      "company_logo": "https://raw.githubusercontent.com/arteminthesky/iphone_desktop/master/applications/cv_app/assets/md.jpg",
       "link": "https://mercdev.com/",
       "start_date": {
         "month": 5,
@@ -63,7 +63,7 @@
     },
     {
       "company_name": "Yandex",
-      "company_logo": "https://raw.githubusercontent.com/arteminthesky/iphone_desktop/master/cv_app/assets/ya.png",
+      "company_logo": "https://raw.githubusercontent.com/arteminthesky/iphone_desktop/master/applications/cv_app/assets/ya.png",
       "link": "https://ya.ru/",
       "start_date": {
         "month": 2,
