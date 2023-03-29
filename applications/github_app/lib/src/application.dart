@@ -23,8 +23,10 @@ class GitHubApplication extends RouteApplication {
   @override
   Widget buildApp(BuildContext context) {
     return CupertinoApp(
+      color: Colors.white,
       home: CupertinoPageScaffold(
-        child: Scaffold(),
+        backgroundColor: Colors.white,
+        child: Container(),
       ),
     );
   }
