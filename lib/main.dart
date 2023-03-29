@@ -41,6 +41,7 @@ class Application extends StatelessWidget {
         child: Provider<SiriSuggestions>.value(
           value: SiriSuggestions([]),
           child: CupertinoApp(
+            title: essentials.profile.name,
             color: Colors.transparent,
             builder: (context, child) {
               if (size.isInfinite) {
