@@ -34,6 +34,12 @@ class CVApplication extends OverlayApplication {
   @override
   Widget buildApp(BuildContext context) {
     return CupertinoApp(
+      builder: (context, child) {
+        return MediaQuery(
+          data: ApplicationHost.mediaQuery(context),
+          child: child!,
+        );
+      },
       home: Provider.value(
         value: profile,
         child: const CvScreen(),

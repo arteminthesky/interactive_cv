@@ -1,3 +1,4 @@
+import 'package:app_base/app_base.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:interactive_cv/di/di.dart';
@@ -8,7 +9,6 @@ import 'package:interactive_cv/iphone_desktop_page_view.dart';
 import 'package:interactive_cv/ui/widgets/decorations/decorations.dart';
 import 'package:interactive_cv/ui/widgets/decorations/web_decoration.dart';
 import 'package:interactive_cv/window_configuration.dart';
-
 import 'package:models/models.dart';
 import 'package:platform_utils/platform_utils.dart' as platform;
 import 'package:provider/provider.dart';
@@ -35,31 +35,39 @@ class Application extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppDecoration(appBuilder: (_, size, safeArea) {
-      return Provider.value(
-        value: essentials,
-        child: Provider<SiriSuggestions>.value(
-          value: SiriSuggestions([]),
-          child: CupertinoApp(
-            title: essentials.profile.name,
-            color: Colors.transparent,
-            builder: (context, child) {
-              if (size.isInfinite) {
-                return child!;
-              }
-              return MediaQuery(
-                data: MediaQuery.of(context).copyWith(
-                  size: size,
-                  padding: safeArea,
-                ),
-                child: child!,
-              );
-            },
-            home: const DesktopPage(),
+    return AppDecoration(
+      appBuilder: (_, size, safeArea) {
+        return Provider.value(
+          value: essentials,
+          child: Provider<SiriSuggestions>.value(
+            value: SiriSuggestions([]),
+            child: CupertinoApp(
+              title: essentials.profile.name,
+              color: Colors.transparent,
+              builder: (context, child) {
+                var effectiveMediaQuery = MediaQuery.of(context);
+
+                if (!size.isInfinite) {
+                  effectiveMediaQuery = MediaQuery.of(context).copyWith(
+                    size: size,
+                    padding: safeArea,
+                  );
+                }
+
+                return ApplicationHost(
+                  mediaQueryData: effectiveMediaQuery,
+                  child: MediaQuery(
+                    data: effectiveMediaQuery,
+                    child: child!,
+                  ),
+                );
+              },
+              home: const DesktopPage(),
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 }
 
