@@ -1,6 +1,5 @@
 import 'package:cv_app/src/cv/cv.dart';
 import 'package:cv_app/src/cv/cv_themes.dart';
-import 'package:cv_app/src/cv/widgets/cv_theme_picker.dart';
 import 'package:cv_app/src/cv/widgets/cv_theme_widget.dart';
 import 'package:cv_app/src/domain/profile.dart';
 import 'package:flutter/material.dart';
@@ -43,32 +42,17 @@ class _CvScreenState extends State<CvScreen> {
                 profile: _profile,
               );
 
-              Widget themePicker = const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: CvThemePicker(),
-              );
-
               return SingleChildScrollView(
                 child: Flex(
                   direction: isVerticalLayout ? Axis.vertical : Axis.horizontal,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (!isVerticalLayout) const Spacer(),
-                    if (isVerticalLayout) themePicker,
                     SizedBox(
                       width: isVerticalLayout ? constraints.maxWidth : 500,
                       child: cvWidget,
                     ),
-                    if (!isVerticalLayout)
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Align(
-                            alignment: Alignment.topRight,
-                            child: themePicker,
-                          ),
-                        ),
-                      ),
+                    if (!isVerticalLayout) const Spacer(),
                   ],
                 ),
               );

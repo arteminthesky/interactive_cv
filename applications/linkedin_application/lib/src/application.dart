@@ -20,6 +20,7 @@ class LinkedInApplication extends Application {
           iconResource: 'assets/apps/linkedin.png',
           imageColor: Colors.white,
           backgroundColor: Colors.blue,
+          padding: 4,
         ),
         name: 'LinkedIn',
         description: '',

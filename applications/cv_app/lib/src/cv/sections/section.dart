@@ -5,11 +5,11 @@ class _Section extends StatelessWidget {
   const _Section({
     Key? key,
     required this.header,
-    required this.body,
+    this.body,
   }) : super(key: key);
 
   final Widget header;
-  final Widget body;
+  final Widget? body;
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +18,9 @@ class _Section extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         header,
-        const SectionDivider(),
-        body,
-        const SizedBox(height: 20),
+        const SizedBox(height: 6),
+        body ?? const Offstage(),
+        const SizedBox(height: 40),
       ],
     );
   }

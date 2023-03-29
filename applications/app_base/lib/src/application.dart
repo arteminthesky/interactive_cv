@@ -25,6 +25,8 @@ abstract class Application {
         image: AssetImage(icon.iconResource, package: icon.package),
         fit: BoxFit.cover,
         color: icon.imageColor,
+        width: 50,
+        height: 50,
       ),
     );
   }

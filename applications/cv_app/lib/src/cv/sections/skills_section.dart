@@ -10,7 +10,7 @@ class SkillsSection extends StatelessWidget {
     return _Section(
       header: const SectionHeader('Skills'),
       body: Wrap(
-        spacing: 10,
+        spacing: 5,
         runSpacing: 5,
         children: skills.map((e) => SkillTagWidget(skill: e)).toList(),
       ),

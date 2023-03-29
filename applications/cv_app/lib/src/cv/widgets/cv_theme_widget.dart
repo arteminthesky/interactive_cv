@@ -111,26 +111,26 @@ class _CvThemeState extends State<CvTheme> {
             color: theme.textColor,
           ),
           textTheme: Theme.of(context).textTheme.copyWith(
-                headline1: GoogleFonts.robotoMono(
+                displayLarge: GoogleFonts.robotoMono(
                   fontWeight: FontWeight.bold,
                   fontSize: 36,
                   color: theme.textColor,
                 ),
-                headline2: GoogleFonts.robotoMono(
+                displayMedium: GoogleFonts.robotoMono(
                   fontWeight: FontWeight.bold,
                   fontSize: 24,
                   color: theme.textColor,
                 ),
-                subtitle1: GoogleFonts.roboto(
+                titleSmall: GoogleFonts.roboto(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                   color: theme.textColor,
                 ),
-                bodyText1: GoogleFonts.robotoMono(
+                bodyMedium: GoogleFonts.robotoMono(
                     color: theme.textColor,
                     fontSize: 16,
                     fontWeight: FontWeight.w600),
-                bodyText2: GoogleFonts.roboto(
+                bodySmall: GoogleFonts.roboto(
                   color: theme.textColor,
                   fontSize: 14,
                 ),

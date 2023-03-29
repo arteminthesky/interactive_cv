@@ -13,40 +13,6 @@ class BaseInfoSection extends StatelessWidget {
         profile.name,
         subtitle: profile.bio,
       ),
-      body: Table(
-        columnWidths: {
-          0: FixedColumnWidth(70),
-        },
-        children: [
-          TableRow(
-            children: [
-              const Text(
-                'Age:',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text(profile.age.toString()),
-            ],
-          ),
-          TableRow(
-            children: [
-              const Text(
-                'Sex:',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text(profile.sex),
-            ],
-          ),
-          TableRow(
-            children: [
-              const Text(
-                'Country:',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text(profile.country),
-            ],
-          ),
-        ],
-      ),
     );
   }
 }

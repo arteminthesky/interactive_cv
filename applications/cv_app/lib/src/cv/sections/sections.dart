@@ -1,7 +1,6 @@
 library sections;
 
 import 'package:cv_app/src/cv/widgets/header.dart';
-import 'package:cv_app/src/cv/widgets/section_divider.dart';
 import 'package:cv_app/src/cv/widgets/section_header.dart';
 import 'package:cv_app/src/cv/widgets/skill_tag_widget.dart';
 import 'package:cv_app/src/cv/widgets/step_widget.dart';

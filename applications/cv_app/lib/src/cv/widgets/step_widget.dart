@@ -7,9 +7,9 @@ enum StepType {
 }
 
 class StepWidget extends StatelessWidget {
-  List<Widget> steps;
+  const StepWidget({Key? key, required this.steps}) : super(key: key);
 
-  StepWidget({Key? key, required this.steps}) : super(key: key);
+  final List<Widget> steps;
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +48,7 @@ class StepRow extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
-          SizedBox(
-            width: 40,
-          ),
+          const SizedBox(width: 40),
           Expanded(
             child: Card(
               elevation: 8,

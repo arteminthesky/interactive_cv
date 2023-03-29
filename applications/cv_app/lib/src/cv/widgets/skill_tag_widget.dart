@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class SkillTagWidget extends StatelessWidget {
-  SkillTagWidget({Key? key, required this.skill}) : super(key: key);
+  const SkillTagWidget({Key? key, required this.skill}) : super(key: key);
 
   final String skill;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6),
         color: Theme.of(context).dividerColor,
@@ -17,7 +17,7 @@ class SkillTagWidget extends StatelessWidget {
         skill,
         style: Theme.of(context)
             .textTheme
-            .bodyText2
+            .bodySmall
             ?.copyWith(color: Theme.of(context).scaffoldBackgroundColor),
       ),
     );

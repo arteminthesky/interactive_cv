@@ -19,10 +19,10 @@ class Header extends StatelessWidget {
       children: [
         Text(
           text,
-          style: Theme.of(context).textTheme.headline1,
+          style: Theme.of(context).textTheme.displayLarge,
         ),
         if (subtitle != null)
-          Text(subtitle!, style: Theme.of(context).textTheme.subtitle1),
+          Text(subtitle!, style: Theme.of(context).textTheme.titleSmall),
       ],
     );
   }

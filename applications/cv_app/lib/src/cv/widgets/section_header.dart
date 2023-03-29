@@ -12,7 +12,7 @@ class SectionHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: Theme.of(context).textTheme.headline2,
+      style: Theme.of(context).textTheme.displayMedium,
     );
   }
 }

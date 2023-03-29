@@ -23,7 +23,11 @@ class CVApplication extends OverlayApplication {
   @override
   Widget buildIcon(BuildContext context) {
     return const Center(
-      child: Icon(Icons.person),
+      child: Icon(
+        Icons.list_alt_rounded,
+        size: 40,
+        color: Colors.black,
+      ),
     );
   }
 
