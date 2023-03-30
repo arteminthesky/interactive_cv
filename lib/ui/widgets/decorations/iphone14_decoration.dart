@@ -13,73 +13,107 @@ class IPhone14Decoration extends StatelessWidget {
     return DecoratedBox(
       position: DecorationPosition.background,
       decoration: ShapeDecoration(
-          shape: SmoothRectangleBorder(
-            borderRadius: SmoothBorderRadius(
-              cornerRadius: kIphone14ScreenBorderRadius + 6,
-              // TODO: refactor this trick
-              cornerSmoothing: 0.5,
-            ),
-            side: const BorderSide(
-              color: Color(0xff2c2c2c),
-              width: 4,
-              strokeAlign: BorderSide.strokeAlignOutside,
-            ),
+        color: Color(0xff2c2c2c),
+        shape: SmoothRectangleBorder(
+          borderRadius: SmoothBorderRadius(
+            cornerRadius: kIphone14ScreenBorderRadius + 6,
+            // TODO: refactor this trick
+            cornerSmoothing: 0.5,
           ),
-          shadows: [
-            BoxShadow(
-              color: Colors.white.withOpacity(0.5),
-              blurRadius: 60,
-            )
-          ]),
-      child: Padding(
-        padding: const EdgeInsets.all(6),
-        child: DecoratedBox(
-          position: DecorationPosition.foreground,
-          decoration: ShapeDecoration(
-            shape: SmoothRectangleBorder(
-              borderRadius: SmoothBorderRadius(
-                cornerRadius: kIphone14ScreenBorderRadius,
-                cornerSmoothing: 0.5,
-              ),
-              side: const BorderSide(
-                color: Colors.black,
-                width: 8,
-                strokeAlign: BorderSide.strokeAlignOutside,
-              ),
-            ),
-          ),
-          child: RepaintBoundary(
-            key: const ValueKey('screen_repaint_boundary'),
-            child: ClipSmoothRect(
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              radius: SmoothBorderRadius(
-                cornerRadius: kIphone14ScreenBorderRadius,
-                cornerSmoothing: 0.5,
-              ),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  SizedBox.fromSize(
-                    size: kIphone14ScreenSize,
-                    child: appBuilder(
-                      context,
-                      kIphone14ScreenSize,
-                      kIphone14SafeArea,
-                      screenBorderRadius: kIphone14ScreenBorderRadius,
+        ),
+        shadows: [
+          BoxShadow(
+            color: Colors.white.withOpacity(0.5),
+            blurRadius: 60,
+          )
+        ],
+      ),
+      child: ClipSmoothRect(
+        radius: SmoothBorderRadius(
+          cornerRadius: kIphone14ScreenBorderRadius + 6,
+          // TODO: refactor this trick
+          cornerSmoothing: 0.5,
+        ),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Positioned.fill(
+              child: Padding(
+                padding: const EdgeInsets.all(3.0),
+                child: DecoratedBox(
+                  decoration: ShapeDecoration(
+                    color: Colors.black,
+                    shape: SmoothRectangleBorder(
+                      borderRadius: SmoothBorderRadius(
+                        cornerRadius: kIphone14ScreenBorderRadius + 6,
+                        // TODO: refactor this trick
+                        cornerSmoothing: 0.5,
+                      ),
                     ),
                   ),
-                  const Positioned(
-                    top: 7,
-                    child: _Notch(),
-                  ),
-                  const Positioned(
-                    bottom: 7,
-                    child: _GestureIndicator(),
-                  ),
-                ],
+                  child: const SizedBox.expand(),
+                ),
               ),
             ),
-          ),
+            Positioned(
+              bottom: 100,
+              child: Transform.rotate(
+                angle: -pi / 4,
+                child: ClipRect(
+                  child: Container(
+                    width: kIphone14ScreenSize.width * 2.5,
+                    height: 300,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.white.withOpacity(0.3),
+                          Colors.transparent,
+                          Colors.white.withOpacity(0.3),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: RepaintBoundary(
+                key: const ValueKey('screen_repaint_boundary'),
+                child: ClipSmoothRect(
+                  clipBehavior: Clip.antiAlias,
+                  radius: SmoothBorderRadius(
+                    cornerRadius: kIphone14ScreenBorderRadius,
+                    cornerSmoothing: 0.5,
+                  ),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      SizedBox.fromSize(
+                        size: kIphone14ScreenSize,
+                        child: appBuilder(
+                          context,
+                          kIphone14ScreenSize,
+                          kIphone14SafeArea,
+                          screenBorderRadius: kIphone14ScreenBorderRadius,
+                        ),
+                      ),
+                      const Positioned(
+                        bottom: 7,
+                        child: _GestureIndicator(),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            const Positioned(
+              top: 10,
+              child: _Notch(),
+            ),
+          ],
         ),
       ),
     );
