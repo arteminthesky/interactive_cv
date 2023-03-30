@@ -12,7 +12,7 @@ class WebDecoration extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if(window.physicalSize.aspectRatio < 1) {
-      return appBuilder(context, Size.infinite, EdgeInsets.zero);
+      return appBuilder(context, null, null);
     }
     return GradientBackground(
       child: Padding(
