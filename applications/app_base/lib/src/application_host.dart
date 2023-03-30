@@ -1,3 +1,4 @@
+import 'package:app_base/src/application_host_configuration.dart';
 import 'package:flutter/cupertino.dart';
 
 class _ApplicationHostScope extends InheritedWidget {
@@ -19,21 +20,29 @@ class ApplicationHost extends StatefulWidget {
   const ApplicationHost({
     Key? key,
     required this.child,
-    required this.mediaQueryData,
+    required this.configuration,
   }) : super(key: key);
 
   final Widget child;
-  final MediaQueryData mediaQueryData;
+  final ApplicationHostConfiguration configuration;
 
   @override
   State<ApplicationHost> createState() => _ApplicationHostState();
 
-  static MediaQueryData mediaQuery(BuildContext context) {
+  static MediaQueryData? mediaQuery(BuildContext context) {
+    return maybeOf(context)?.mediaQueryData;
+  }
+
+  static double? screenRadius(BuildContext context) {
+    return maybeOf(context)?.screenRadius;
+  }
+
+  static ApplicationHostConfiguration? maybeOf(BuildContext context) {
     return context
-        .dependOnInheritedWidgetOfExactType<_ApplicationHostScope>()!
-        .state
+        .dependOnInheritedWidgetOfExactType<_ApplicationHostScope>()
+        ?.state
         .widget
-        .mediaQueryData;
+        .configuration;
   }
 }
 

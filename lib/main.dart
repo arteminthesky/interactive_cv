@@ -6,6 +6,7 @@ import 'package:interactive_cv/drawers/left_drawer_page.dart';
 import 'package:interactive_cv/drawers/notifications_drawer.dart';
 import 'package:interactive_cv/drawers/right_drawer_page.dart';
 import 'package:interactive_cv/iphone_desktop_page_view.dart';
+import 'package:interactive_cv/ui/utils.dart';
 import 'package:interactive_cv/ui/widgets/decorations/decorations.dart';
 import 'package:interactive_cv/ui/widgets/decorations/web_decoration.dart';
 import 'package:interactive_cv/window_configuration.dart';
@@ -36,7 +37,7 @@ class Application extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppDecoration(
-      appBuilder: (_, size, safeArea) {
+      appBuilder: (_, size, safeArea, {double? screenBorderRadius}) {
         return Provider.value(
           value: essentials,
           child: Provider<SiriSuggestions>.value(
@@ -45,17 +46,17 @@ class Application extends StatelessWidget {
               title: essentials.profile.name,
               color: Colors.transparent,
               builder: (context, child) {
-                var effectiveMediaQuery = MediaQuery.of(context);
-
-                if (!size.isInfinite) {
-                  effectiveMediaQuery = MediaQuery.of(context).copyWith(
-                    size: size,
-                    padding: safeArea,
-                  );
-                }
+                var effectiveMediaQuery = UiUtils.combineMediaQuery(
+                  context,
+                  screenSize: size,
+                  safeArea: safeArea,
+                );
 
                 return ApplicationHost(
-                  mediaQueryData: effectiveMediaQuery,
+                  configuration: ApplicationHostConfiguration.create(
+                    mediaQueryData: effectiveMediaQuery,
+                    screenRadius: screenBorderRadius,
+                  ),
                   child: MediaQuery(
                     data: effectiveMediaQuery,
                     child: child!,
@@ -114,7 +115,7 @@ class AppDecoration extends StatelessWidget {
         appBuilder: appBuilder,
       );
     } else {
-      return appBuilder(context, Size.infinite, EdgeInsets.zero);
+      return appBuilder(context, null, null, );
     }
   }
 }

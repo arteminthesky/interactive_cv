@@ -7,7 +7,8 @@ import 'package:interactive_cv/constants.dart';
 part 'iphone14_decoration.dart';
 
 typedef AppBuilder = Widget Function(
-    BuildContext context,
-    Size size,
-    EdgeInsets safeArea,
-    );
+  BuildContext context,
+  Size? size,
+  EdgeInsets? safeArea, {
+  double screenBorderRadius,
+});

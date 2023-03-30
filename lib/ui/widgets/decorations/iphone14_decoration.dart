@@ -13,24 +13,24 @@ class IPhone14Decoration extends StatelessWidget {
     return DecoratedBox(
       position: DecorationPosition.background,
       decoration: ShapeDecoration(
-        shape: SmoothRectangleBorder(
-          borderRadius: SmoothBorderRadius(
-            cornerRadius: 56,
-            cornerSmoothing: 0.5,
+          shape: SmoothRectangleBorder(
+            borderRadius: SmoothBorderRadius(
+              cornerRadius: kIphone14ScreenBorderRadius + 6,
+              // TODO: refactor this trick
+              cornerSmoothing: 0.5,
+            ),
+            side: const BorderSide(
+              color: Color(0xff2c2c2c),
+              width: 4,
+              strokeAlign: BorderSide.strokeAlignOutside,
+            ),
           ),
-          side: const BorderSide(
-            color: Color(0xff2c2c2c),
-            width: 4,
-            strokeAlign: BorderSide.strokeAlignOutside,
-          ),
-        ),
-        shadows: [
-          BoxShadow(
-            color: Colors.white.withOpacity(0.5),
-            blurRadius: 60,
-          )
-        ]
-      ),
+          shadows: [
+            BoxShadow(
+              color: Colors.white.withOpacity(0.5),
+              blurRadius: 60,
+            )
+          ]),
       child: Padding(
         padding: const EdgeInsets.all(6),
         child: DecoratedBox(
@@ -38,7 +38,7 @@ class IPhone14Decoration extends StatelessWidget {
           decoration: ShapeDecoration(
             shape: SmoothRectangleBorder(
               borderRadius: SmoothBorderRadius(
-                cornerRadius: 50,
+                cornerRadius: kIphone14ScreenBorderRadius,
                 cornerSmoothing: 0.5,
               ),
               side: const BorderSide(
@@ -53,7 +53,7 @@ class IPhone14Decoration extends StatelessWidget {
             child: ClipSmoothRect(
               clipBehavior: Clip.antiAliasWithSaveLayer,
               radius: SmoothBorderRadius(
-                cornerRadius: 50,
+                cornerRadius: kIphone14ScreenBorderRadius,
                 cornerSmoothing: 0.5,
               ),
               child: Stack(
@@ -65,6 +65,7 @@ class IPhone14Decoration extends StatelessWidget {
                       context,
                       kIphone14ScreenSize,
                       kIphone14SafeArea,
+                      screenBorderRadius: kIphone14ScreenBorderRadius,
                     ),
                   ),
                   const Positioned(

@@ -35,10 +35,13 @@ class CVApplication extends OverlayApplication {
   Widget buildApp(BuildContext context) {
     return CupertinoApp(
       builder: (context, child) {
-        return MediaQuery(
-          data: ApplicationHost.mediaQuery(context),
-          child: child!,
-        );
+        var mediaQueryData = ApplicationHost.mediaQuery(context);
+
+        if (mediaQueryData != null) {
+          return MediaQuery(data: mediaQueryData, child: child!);
+        } else {
+          return child!;
+        }
       },
       home: Provider.value(
         value: profile,
