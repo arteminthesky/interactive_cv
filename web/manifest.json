@@ -1,11 +1,11 @@
 {
-    "name": "iphone_desktop",
-    "short_name": "iphone_desktop",
+    "name": "Artem Artemov",
+    "short_name": "Artem Artemov",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#D2EADB",
     "theme_color": "#D2EADB",
-    "description": "iPhone desktop emulator",
+    "description": "Artem Artemov's interactive CV",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
