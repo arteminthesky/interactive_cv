@@ -46,6 +46,20 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
   final _scrollPhysics = const ClampingScrollPhysics();
 
   @override
+  void initState() {
+    super.initState();
+
+    // EXPERIMENTAL
+    Future.delayed(const Duration(seconds: 3), () {
+      return _desktopsController.animateTo(_width * 0.8,
+          duration: const Duration(milliseconds: 500), curve: Curves.easeOutQuart);
+    }).then((value) {
+      return _desktopsController.animateTo(_width * 1.2,
+          duration: const Duration(milliseconds: 500), curve: Curves.easeOutQuart);
+    });
+  }
+
+  @override
   void dispose() {
     _mainPageSnapping.dispose();
     _mainPageScrollPhysicsEnabled.dispose();
@@ -114,12 +128,14 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
                                   ? _scrollPhysics
                                   : const NeverScrollableScrollPhysics(),
                               controller: _desktopsController,
-                              itemBuilder: (BuildContext context, int position) {
+                              itemBuilder:
+                                  (BuildContext context, int position) {
                                 Widget child = desktops[position];
                                 var currentPageValue = 1.0;
                                 var scale = 1.0;
                                 var translationOffset = Offset.zero;
-                                var scrollPosition = _desktopsController.position;
+                                var scrollPosition =
+                                    _desktopsController.position;
                                 if (!scrollPosition.hasPixels ||
                                     scrollPosition.hasContentDimensions) {
                                   currentPageValue =
