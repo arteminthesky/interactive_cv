@@ -5,7 +5,7 @@ abstract class Essentials {
 
   const Essentials._();
 
-  abstract final Profile profile;
+  abstract final ConfigurationBundle configurationBundle;
   abstract final List<Application> applications;
 
   Future<void> load();
@@ -16,7 +16,7 @@ class _BaseEssentials extends Essentials {
 
   final ApplicationLoader _applicationLoader = BaseApplicationLoader();
 
-  Profile? _profile;
+  ConfigurationBundle? _configurationBundle;
   List<Application>? _applications;
 
   @override
@@ -26,22 +26,22 @@ class _BaseEssentials extends Essentials {
   }
 
   Future<void> _initProfile() async {
-    _profile = await _loadProfile();
+    _configurationBundle = await _loadConfiguration();
   }
 
-  Future<Profile> _loadProfile() async {
-    return Profile.fromJson(jsonDecode(
-      await rootBundle.loadString('assets/profile.json'),
+  Future<ConfigurationBundle> _loadConfiguration() async {
+    return ConfigurationBundle.fromJson(jsonDecode(
+      await rootBundle.loadString('assets/config.json'),
     ));
   }
 
   Future<void> _initApplications() async {
-    assert(_profile != null);
-    _applications = await _applicationLoader.load(profile);
+    assert(_configurationBundle != null);
+    _applications = await _applicationLoader.load(_configurationBundle!);
   }
 
   @override
-  Profile get profile => _profile!;
+  ConfigurationBundle get configurationBundle => _configurationBundle!;
 
   @override
   List<Application> get applications => _applications!;

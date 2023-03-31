@@ -3,6 +3,7 @@ import 'package:cv_app/cv_app.dart';
 import 'package:cv_app/src/cv/cv_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:models/models.dart';
 import 'package:provider/provider.dart';
 
 class CVApplication extends OverlayApplication {

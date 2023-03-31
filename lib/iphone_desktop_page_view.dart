@@ -20,7 +20,7 @@ class IPhoneDesktopPageView extends StatefulWidget {
   }) : super(key: key);
 
   final List<Desktop> desktops;
-  final Wallpaper wallpaper;
+  final Wallpaper? wallpaper;
   final Widget leftDrawer;
   final Widget rightDrawer;
   final Widget topDrawer;

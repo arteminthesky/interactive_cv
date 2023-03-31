@@ -1,8 +1,8 @@
 import 'package:cv_app/src/cv/cv.dart';
 import 'package:cv_app/src/cv/cv_themes.dart';
 import 'package:cv_app/src/cv/widgets/cv_theme_widget.dart';
-import 'package:cv_app/src/domain/profile.dart';
 import 'package:flutter/material.dart';
+import 'package:models/models.dart';
 import 'package:provider/provider.dart';
 
 class CvScreen extends StatefulWidget {

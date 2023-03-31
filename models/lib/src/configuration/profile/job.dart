@@ -5,12 +5,21 @@ part 'job.g.dart';
 @JsonSerializable(createToJson: false)
 @DateTimeConverter()
 class Job {
+  @JsonKey(name: 'company_name')
   final String companyName;
+
+  @JsonKey(name: 'start_date')
   final DateTime? startDate;
-  @JsonKey(includeIfNull: false)
+
+  @JsonKey(name: 'end_date', includeIfNull: false)
   final DateTime? endDate;
+
+  @JsonKey(name: 'activity_kind')
   final String? activityKind;
+
+  @JsonKey(name: 'company_logo')
   final String? companyLogo;
+
   final String? link;
 
   Job({

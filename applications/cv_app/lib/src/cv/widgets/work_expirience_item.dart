@@ -1,6 +1,6 @@
-import 'package:cv_app/src/domain/job.dart';
 import 'package:cv_app/src/utils/date_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:models/models.dart';
 
 class WorkExpirienceItem extends StatelessWidget {
   const WorkExpirienceItem({Key? key, required this.job}) : super(key: key);
