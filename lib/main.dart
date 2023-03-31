@@ -16,7 +16,7 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  WindowConfiguration.apply();
+  //WindowConfiguration.apply();
 
   final essentials = Essentials();
   await essentials.load();

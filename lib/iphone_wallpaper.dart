@@ -39,6 +39,7 @@ class _IPhoneWallpaperState extends State<IPhoneWallpaper> {
 
     return SizedBox.expand(
       child: Stack(
+        fit: StackFit.expand,
         children: [
           if (blurHash != null) BlurHash(hash: blurHash),
           FutureBuilder(
@@ -47,9 +48,11 @@ class _IPhoneWallpaperState extends State<IPhoneWallpaper> {
               Widget child;
 
               if (snapshot.connectionState == ConnectionState.done) {
-                child = Image(
-                  image: AssetImage(widget.wallpaper!.asset),
-                  fit: BoxFit.cover,
+                child = SizedBox.expand(
+                  child: Image(
+                    image: AssetImage(widget.wallpaper!.asset),
+                    fit: BoxFit.cover,
+                  ),
                 );
               } else {
                 child = const Offstage();
