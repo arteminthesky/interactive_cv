@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.artemov.iphone_desktop">
    <application
-        android:label="iphone_desktop"
+        android:label="Artem Artemov 1"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
