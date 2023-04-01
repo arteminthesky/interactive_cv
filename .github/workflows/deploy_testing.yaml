@@ -56,7 +56,7 @@ jobs:
             firebase.json
   # Deploy web on live / production channel
   web-deploy:
-    name: "Deploy web on live channel"
+    name: "Deploy web on preview channel"
     timeout-minutes: 5
     runs-on: ubuntu-latest
     defaults:
