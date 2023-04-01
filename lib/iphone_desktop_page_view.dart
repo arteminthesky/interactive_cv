@@ -43,20 +43,51 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
 
   double get _width => MediaQuery.of(context).size.width;
 
-  final _scrollPhysics = const ClampingScrollPhysics();
+  Offset? screenCenter;
+  late List<Widget> desktops;
+  var length = 0;
 
   @override
   void initState() {
     super.initState();
-
+    _prepareDesktops();
     // EXPERIMENTAL
     Future.delayed(const Duration(seconds: 3), () {
       return _desktopsController.animateTo(_width * 0.8,
-          duration: const Duration(milliseconds: 500), curve: Curves.easeOutQuart);
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeOutQuart);
     }).then((value) {
       return _desktopsController.animateTo(_width * 1.2,
-          duration: const Duration(milliseconds: 500), curve: Curves.easeOutQuart);
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeOutQuart);
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final screenSize = MediaQuery.of(context).size;
+    screenCenter = Offset(
+      screenSize.width / 2,
+      screenSize.height / 2,
+    );
+  }
+
+  @override
+  void didUpdateWidget(IPhoneDesktopPageView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.desktops != oldWidget.desktops) {
+      _prepareDesktops();
+    }
+  }
+
+  void _prepareDesktops() {
+    desktops = [
+      const Offstage(),
+      for (var desktop in widget.desktops) DesktopWidget(desktop: desktop),
+      const Offstage(),
+    ];
+    length = desktops.length;
   }
 
   @override
@@ -85,14 +116,6 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
 
   @override
   Widget build(BuildContext context) {
-    var length = widget.desktops.length + 2;
-
-    var desktops = [
-      const Offstage(),
-      for (var desktop in widget.desktops) DesktopWidget(desktop: desktop),
-      const Offstage(),
-    ];
-
     return TopDrawerScope(
       content: widget.topDrawer,
       child: RepaintBoundary(
@@ -125,7 +148,7 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
                               itemCount: length,
                               pageSnapping: _mainPageSnapping.value,
                               physics: _mainPageScrollPhysicsEnabled.value
-                                  ? _scrollPhysics
+                                  ? const ClampingScrollPhysics()
                                   : const NeverScrollableScrollPhysics(),
                               controller: _desktopsController,
                               itemBuilder:
@@ -133,7 +156,7 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
                                 Widget child = desktops[position];
                                 var currentPageValue = 1.0;
                                 var scale = 1.0;
-                                var translationOffset = Offset.zero;
+                                var translationOffset = 0.0;
                                 var scrollPosition =
                                     _desktopsController.position;
                                 if (!scrollPosition.hasPixels ||
@@ -144,24 +167,23 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
 
                                 if (position == 1 && currentPageValue < 1) {
                                   final pageFraction = 1 - currentPageValue;
-                                  translationOffset =
-                                      Offset(_width * -pageFraction, 0);
-                                  scale = 1 - (0.2 * pageFraction);
+                                  translationOffset = _width * -pageFraction;
+                                  scale = 1 - (0.1 * pageFraction);
                                 } else if (position == length - 2 &&
                                     currentPageValue > length - 2) {
                                   var pageFraction =
                                       length - 2 - currentPageValue;
-                                  translationOffset =
-                                      Offset(_width * -pageFraction, 0);
-                                  scale = 1 - (0.2 * -pageFraction);
+                                  translationOffset = _width * -pageFraction;
+                                  scale = 1 - (0.1 * -pageFraction);
                                 }
 
-                                return Transform.translate(
-                                  offset: translationOffset,
-                                  child: Transform.scale(
-                                    scale: scale,
-                                    child: child,
+                                return Transform(
+                                  transform: createMatrix(
+                                    translationOffset,
+                                    scale,
+                                    screenCenter ?? Offset.zero,
                                   ),
+                                  child: child,
                                 );
                               },
                             );
@@ -188,16 +210,13 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
                       if (page >= 0 && page < 1) {
                         translationOffset = _width * -page;
                       }
-                      return Transform.translate(
-                        offset: Offset(
-                          translationOffset,
-                          0,
-                        ),
-                        child: child,
-                      );
-                    } else {
-                      return const Offstage();
                     }
+
+                    return Transform(
+                      transform: Matrix4.identity()
+                        ..translate(translationOffset),
+                      child: child,
+                    );
                   },
                   child: GestureDetector(
                     supportedDevices: const {
@@ -250,11 +269,9 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
                             _desktopsController.offset;
                       }
                     }
-                    return Transform.translate(
-                      offset: Offset(
-                        translationOffset,
-                        0,
-                      ),
+                    return Transform(
+                      transform: Matrix4.identity()
+                        ..translate(translationOffset),
                       child: child,
                     );
                   },
@@ -304,6 +321,14 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
       ),
     );
   }
+
+  Matrix4 createMatrix(double translationX, double scale, Offset scaleCenter) {
+    return Matrix4.identity()
+      ..translate(translationX, 0.0)
+      ..translate(scaleCenter.dx, scaleCenter.dy)
+      ..scale(scale)
+      ..translate(-scaleCenter.dx, -scaleCenter.dy);
+  }
 }
 
 class _DynamicBlur extends StatefulWidget {
@@ -325,14 +350,12 @@ class _DynamicBlurState extends State<_DynamicBlur> {
 
   @override
   Widget build(BuildContext context) {
-    var controller = widget.controller;
-
     return RepaintBoundary(
       key: const ValueKey('dynamic_blur'),
       child: AnimatedBuilder(
-        animation: controller,
+        animation: widget.controller,
         builder: (context, child) {
-          var page = controller.page ?? 1;
+          var page = widget.controller.page ?? 1;
           var blur = 0.0;
 
           if (page < 1) {

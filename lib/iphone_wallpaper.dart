@@ -70,23 +70,6 @@ class _IPhoneWallpaperState extends State<IPhoneWallpaper> {
   }
 }
 
-ImageFrameBuilder _blurHashPlaceholderBuilder(String blurHash) {
-  return (
-    BuildContext context,
-    Widget child,
-    int? frame,
-    bool wasSynchronouslyLoaded,
-  ) {
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        BlurHash(hash: blurHash),
-        child,
-      ],
-    );
-  };
-}
-
 class _IPhoneWallpaperFallback extends StatelessWidget {
   const _IPhoneWallpaperFallback({Key? key}) : super(key: key);
 
