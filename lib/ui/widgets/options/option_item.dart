@@ -5,9 +5,11 @@ class OptionItem extends StatelessWidget {
   const OptionItem({
     Key? key,
     required this.option,
+    this.onClick,
   }) : super(key: key);
 
   final Option option;
+  final VoidCallback? onClick;
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +17,10 @@ class OptionItem extends StatelessWidget {
       child: Text(
         option.name(context),
       ),
+      onPressed: () {
+        option.onClick(context);
+        onClick?.call();
+      },
     );
   }
 }

@@ -21,44 +21,50 @@ class _AppWidgetState extends State<AppWidget> {
       child: widget.app.buildIcon(context),
     );
 
-    return GestureDetector(
-      onLongPress: () {
-        _createOverlay(appIconWidget);
-        assert(_menuOverlayEntry != null);
-
-        Overlay.of(context).insert(_menuOverlayEntry!);
+    final button = CupertinoButton(
+      padding: EdgeInsets.zero,
+      onPressed: () {
+        widget.app.open(context);
       },
-      child: CupertinoButton(
-        padding: EdgeInsets.zero,
-        onPressed: () {
-          widget.app.open(context);
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Hero(
-              tag: widget.app.info.name,
-              child: CompositedTransformTarget(
-                link: _iconLayerLink,
-                child: appIconWidget,
-              ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Hero(
+            tag: widget.app.info.name,
+            child: CompositedTransformTarget(
+              link: _iconLayerLink,
+              child: appIconWidget,
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 5),
-              child: Text(
-                widget.app.info.name,
-                maxLines: 1,
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
-                textAlign: TextAlign.center,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 5),
+            child: Text(
+              widget.app.info.name,
+              maxLines: 1,
+              style: const TextStyle(
+                color: Colors.white,
               ),
+              textAlign: TextAlign.center,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
+
+    if (widget.app.options.isNotEmpty) {
+      return GestureDetector(
+        onLongPress: () {
+          _createOverlay(appIconWidget);
+          assert(_menuOverlayEntry != null);
+
+          Overlay.of(context).insert(_menuOverlayEntry!);
+        },
+        child: button,
+      );
+    }
+
+    return button;
   }
 
   void _createOverlay(Widget appIcon) {

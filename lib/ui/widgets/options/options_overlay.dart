@@ -1,9 +1,8 @@
 import 'dart:ui';
 
 import 'package:app_base/app_base.dart';
-import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:interactive_cv/ui/widgets/options/option_item.dart';
+import 'package:interactive_cv/ui/widgets/options/options_list.dart';
 
 class OptionsOverlay extends StatefulWidget {
   const OptionsOverlay({
@@ -52,6 +51,14 @@ class _OptionsOverlayState extends State<OptionsOverlay>
         _optionsAnimationController.forward();
       }
     });
+
+    _optionsAnimationController.addListener(() {
+      if(_optionsAnimationController.isDismissed) {
+        _animationController.reverse().then((value) {
+          widget.onClose();
+        });
+      }
+    });
   }
 
   @override
@@ -63,7 +70,9 @@ class _OptionsOverlayState extends State<OptionsOverlay>
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: widget.onClose,
+      onTap: () {
+        _optionsAnimationController.reverse();
+      },
       behavior: HitTestBehavior.opaque,
       child: SizedBox.expand(
         child: Stack(
@@ -83,6 +92,7 @@ class _OptionsOverlayState extends State<OptionsOverlay>
             ),
             CompositedTransformFollower(
               link: widget.layerLink,
+              showWhenUnlinked: false,
               followerAnchor: Alignment.topCenter,
               targetAnchor: Alignment.topCenter,
               child: AnimatedBuilder(
@@ -96,46 +106,20 @@ class _OptionsOverlayState extends State<OptionsOverlay>
                 child: widget.appIcon,
               ),
             ),
-            const SizedBox(height: 30),
             CompositedTransformFollower(
               link: widget.layerLink,
+              showWhenUnlinked: false,
               offset: Offset(
                 -widget.layerLink.leaderSize!.width * 0.1,
                 widget.layerLink.leaderSize!.width * 0.1 + 10,
               ),
               targetAnchor: Alignment.bottomLeft,
-              child: IntrinsicWidth(
-                child: AnimatedBuilder(
-                  animation: _optionsAnimationController,
-                  builder: (context, child) {
-                    return DecoratedBox(
-                      decoration: ShapeDecoration(
-                          shape: SmoothRectangleBorder(
-                            borderRadius: SmoothBorderRadius(
-                              cornerRadius: 30,
-                              cornerSmoothing: 0.5,
-                            ),
-                          ),
-                          color: CupertinoDynamicColor.resolve(
-                              CupertinoDynamicColor.withBrightness(
-                                color: Color(0xC7F9F9F9),
-                                darkColor: Color(0xC7252525),
-                              ),
-                              context)),
-                      child: SizeTransition(
-                        sizeFactor: _optionsAnimationController,
-                        child: child,
-                      ),
-                    );
-                  },
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: widget.options
-                        .map((e) => OptionItem(option: e))
-                        .toList(),
-                  ),
-                ),
+              child: OptionsList(
+                options: widget.options,
+                sizeTransition: _optionsAnimationController,
+                onItemClicked: () {
+                  _optionsAnimationController.reverse();
+                },
               ),
             ),
           ],

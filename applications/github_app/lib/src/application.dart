@@ -32,5 +32,8 @@ class GitHubApplication extends RouteApplication {
   }
 
   @override
-  List<Option> get options => [OpenLinkOption('arteminthesky')];
+  List<Option> get options => [
+        OpenAppOption(this),
+        OpenLinkOption('arteminthesky'),
+      ];
 }

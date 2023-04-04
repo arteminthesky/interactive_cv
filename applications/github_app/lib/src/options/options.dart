@@ -5,4 +5,5 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 part 'open_link_option.dart';
+part 'open_app_option.dart';
 
