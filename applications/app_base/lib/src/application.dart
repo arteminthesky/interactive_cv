@@ -1,4 +1,4 @@
-import 'package:app_base/src/models/application_info.dart';
+import 'package:app_base/app_base.dart';
 import 'package:flutter/cupertino.dart';
 
 const double kDefaultAppIconPadding = 10;
@@ -12,6 +12,8 @@ abstract class Application {
 
   /// The way to open application
   Future<void> open(BuildContext context, {String? deepLink});
+
+  List<Option> get options => [];
 
   Widget buildIcon(BuildContext context) {
     var icon = info.icon;
