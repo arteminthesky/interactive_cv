@@ -1,7 +1,10 @@
 part of widgets;
 
 class AppWidget extends StatefulWidget {
-  const AppWidget({Key? key, required this.app}) : super(key: key);
+  const AppWidget({
+    Key? key,
+    required this.app,
+  }) : super(key: key);
 
   final Application app;
 
@@ -77,8 +80,10 @@ class _AppWidgetState extends State<AppWidget> {
             _menuOverlayEntry?.remove();
           },
           layerLink: _iconLayerLink,
+          appPosition: (this.context.findRenderObject() as RenderBox).localToGlobal(Offset.zero),
         );
       },
     );
   }
+
 }

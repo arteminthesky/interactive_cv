@@ -3,6 +3,11 @@ import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:interactive_cv/ui/widgets/options/option_item.dart';
 
+const _kDividerColor = CupertinoDynamicColor.withBrightness(
+  color: Color(0xFFA9A9AF),
+  darkColor: Color(0xFF57585A),
+);
+
 class OptionsList extends StatelessWidget {
   const OptionsList({
     Key? key,
@@ -39,11 +44,7 @@ class OptionsList extends StatelessWidget {
                     border: Border(
                       top: BorderSide(
                         color: CupertinoDynamicColor.resolve(
-                            CupertinoDynamicColor.withBrightness(
-                              color: Color(0xFFA9A9AF),
-                              darkColor: Color(0xFF57585A),
-                            ),
-                            context),
+                            _kDividerColor, context),
                         width: 0.5,
                       ),
                     ),

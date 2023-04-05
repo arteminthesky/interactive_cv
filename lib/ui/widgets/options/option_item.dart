@@ -17,10 +17,12 @@ class OptionItem extends StatelessWidget {
       child: Text(
         option.name(context),
       ),
-      onPressed: () {
-        option.onClick(context);
-        onClick?.call();
-      },
+      onPressed: () => _onPressed(context),
     );
+  }
+
+  void _onPressed(BuildContext context) {
+    option.onClick(context);
+    onClick?.call();
   }
 }
