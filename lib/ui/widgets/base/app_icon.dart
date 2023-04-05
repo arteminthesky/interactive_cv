@@ -15,8 +15,8 @@ class AppIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 70,
-      height: 70,
+      width: 60,
+      height: 60,
       child: ClipSmoothRect(
         radius: const SmoothBorderRadius.all(
           SmoothRadius(

@@ -13,11 +13,11 @@ class IPhone14Decoration extends StatelessWidget {
     return DecoratedBox(
       position: DecorationPosition.background,
       decoration: ShapeDecoration(
-        color: Color(0xff2c2c2c),
+        color: const Color(0xff2c2c2c),
         shape: SmoothRectangleBorder(
           borderRadius: SmoothBorderRadius(
-            cornerRadius: kIphone14ScreenBorderRadius + 6,
             // TODO: refactor this trick
+            cornerRadius: kIphone14ScreenBorderRadius + 6,
             cornerSmoothing: 0.5,
           ),
         ),
@@ -30,8 +30,8 @@ class IPhone14Decoration extends StatelessWidget {
       ),
       child: ClipSmoothRect(
         radius: SmoothBorderRadius(
-          cornerRadius: kIphone14ScreenBorderRadius + 6,
           // TODO: refactor this trick
+        cornerRadius: kIphone14ScreenBorderRadius + 6,
           cornerSmoothing: 0.5,
         ),
         child: Stack(
@@ -110,7 +110,7 @@ class IPhone14Decoration extends StatelessWidget {
               ),
             ),
             const Positioned(
-              top: 10,
+              top: 15,
               child: _Notch(),
             ),
           ],
