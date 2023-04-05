@@ -1,33 +1,49 @@
 part of widgets;
 
-class AppWidget extends StatelessWidget {
-  const AppWidget({Key? key, required this.app}) : super(key: key);
+class AppWidget extends StatefulWidget {
+  const AppWidget({
+    Key? key,
+    required this.app,
+  }) : super(key: key);
 
   final Application app;
 
   @override
+  State<AppWidget> createState() => _AppWidgetState();
+}
+
+class _AppWidgetState extends State<AppWidget> {
+  final LayerLink _iconLayerLink = LayerLink();
+  OverlayEntry? _menuOverlayEntry;
+
+  @override
   Widget build(BuildContext context) {
-    return CupertinoButton(
+    var appIconWidget = AppIcon(
+      color: widget.app.info.icon.backgroundColor ?? Colors.white,
+      gradient: widget.app.info.icon.gradient,
+      child: widget.app.buildIcon(context),
+    );
+
+    final button = CupertinoButton(
       padding: EdgeInsets.zero,
       onPressed: () {
-        app.open(context);
+        widget.app.open(context);
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Hero(
-            tag: app.info.name,
-            child: AppIcon(
-              color: app.info.icon.backgroundColor ?? Colors.white,
-              gradient: app.info.icon.gradient,
-              child: app.buildIcon(context),
+            tag: widget.app.info.name,
+            child: CompositedTransformTarget(
+              link: _iconLayerLink,
+              child: appIconWidget,
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 5),
             child: Text(
-              app.info.name,
+              widget.app.info.name,
               maxLines: 1,
               style: const TextStyle(
                 color: Colors.white,
@@ -38,5 +54,36 @@ class AppWidget extends StatelessWidget {
         ],
       ),
     );
+
+    if (widget.app.options.isNotEmpty) {
+      return GestureDetector(
+        onLongPress: () {
+          _createOverlay(appIconWidget);
+          assert(_menuOverlayEntry != null);
+
+          Overlay.of(context).insert(_menuOverlayEntry!);
+        },
+        child: button,
+      );
+    }
+
+    return button;
   }
+
+  void _createOverlay(Widget appIcon) {
+    _menuOverlayEntry = OverlayEntry(
+      builder: (context) {
+        return OptionsOverlay(
+          options: widget.app.options,
+          appIcon: appIcon,
+          onClose: () {
+            _menuOverlayEntry?.remove();
+          },
+          layerLink: _iconLayerLink,
+          appPosition: (this.context.findRenderObject() as RenderBox).localToGlobal(Offset.zero),
+        );
+      },
+    );
+  }
+
 }
