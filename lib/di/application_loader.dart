@@ -44,7 +44,7 @@ class BaseApplicationLoader extends ApplicationLoader {
   Application? _ensureCreateGithub(ConfigurationBundle bundle) {
     final github = bundle.profile?.githubUrl;
     if (github != null) {
-      return GitHubApplication();
+      return GitHubApplication(github);
     }
     return null;
   }
