@@ -22,4 +22,5 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
           .toList(),
       skills:
           (json['skills'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      leetcode: json['leetcode'] as String?,
     );

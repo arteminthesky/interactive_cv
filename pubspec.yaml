@@ -45,6 +45,9 @@ dependencies:
   github_fidget:
     path: ./fidgets/github_fidget
 
+  leetcode:
+    path: ./applications/leetcode
+
   fast_noise: ^1.0.1
 
 dev_dependencies:

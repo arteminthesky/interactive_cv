@@ -20,6 +20,7 @@ class Profile {
   @JsonKey(name: 'work_experience')
   final List<Job>? workExperience;
   final List<String>? skills;
+  final String? leetcode;
 
   Profile({
     required this.name,
@@ -34,13 +35,9 @@ class Profile {
     this.linkedin,
     this.workExperience,
     this.skills,
+    this.leetcode,
   });
 
   factory Profile.fromJson(Map<String, Object?> json) => _$ProfileFromJson(json);
 
-  bool get hasContactInformation =>
-      telegram != null ||
-      linkedin != null ||
-      githubUrl != null ||
-      email != null;
 }

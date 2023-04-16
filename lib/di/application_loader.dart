@@ -2,6 +2,7 @@ import 'package:app_base/app_base.dart';
 import 'package:cv_app/cv_app.dart';
 import 'package:github_app/github_app.dart';
 import 'package:gmail/gmail.dart';
+import 'package:leetcode/leetcode.dart';
 import 'package:linkedin_application/linkedin_application.dart';
 import 'package:models/models.dart';
 
@@ -21,6 +22,7 @@ class BaseApplicationLoader extends ApplicationLoader {
       _ensureCreateGithub,
       _ensureCreateLinkedInApp,
       _ensureCreateGmail,
+      _ensureCreateLeetcode,
     ];
 
     for (final applicationLoader in applicationLoaders) {
@@ -44,7 +46,7 @@ class BaseApplicationLoader extends ApplicationLoader {
   Application? _ensureCreateGithub(ConfigurationBundle bundle) {
     final github = bundle.profile?.githubUrl;
     if (github != null) {
-      return GitHubApplication();
+      return GitHubApplication(github);
     }
     return null;
   }
@@ -61,6 +63,14 @@ class BaseApplicationLoader extends ApplicationLoader {
     final email = bundle.profile?.email;
     if (email != null) {
       return GmailApplication(email);
+    }
+    return null;
+  }
+
+  Application? _ensureCreateLeetcode(ConfigurationBundle bundle) {
+    final leetcode = bundle.profile?.leetcode;
+    if(leetcode != null) {
+      return LeetcodeApplication(leetcode);
     }
     return null;
   }
