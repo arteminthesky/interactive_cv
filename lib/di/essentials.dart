@@ -30,9 +30,11 @@ class _BaseEssentials extends Essentials {
   }
 
   Future<ConfigurationBundle> _loadConfiguration() async {
-    return ConfigurationBundle.fromJson(jsonDecode(
-      await rootBundle.loadString('assets/config.json'),
-    ));
+    return ConfigurationBundle.fromJson(
+      jsonDecode(
+        await rootBundle.loadString('assets/config.json'),
+      ) as Map<String, Object?>,
+    );
   }
 
   Future<void> _initApplications() async {
