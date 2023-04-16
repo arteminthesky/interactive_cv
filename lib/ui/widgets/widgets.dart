@@ -8,8 +8,6 @@ import 'package:interactive_cv/ui/widgets/base/base.dart';
 import 'package:interactive_cv/ui/widgets/options/options_overlay.dart';
 import 'package:models/models.dart';
 
-import 'app_icons/app_icons.dart';
-
 export 'base/base.dart';
 export 'fidgets/fidgets.dart';
 

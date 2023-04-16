@@ -1,5 +1,4 @@
 import 'package:app_base/app_base.dart';
-import 'package:cv_app/cv_app.dart';
 import 'package:cv_app/src/cv/cv_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

@@ -1,5 +1,4 @@
 import 'package:platform_utils/src/platform_info_base.dart';
-import 'dart:html';
 
 class PlatformInfoImpl extends PlatformInfo {
   @override

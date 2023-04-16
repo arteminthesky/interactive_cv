@@ -125,8 +125,6 @@ class _LeftDrawerControllerState extends State<_LeftDrawerController> {
         TopDrawerState(offset, TopDrawerAnimationState.begin);
   }
 
-  void _updateAnimation() {}
-
   void _idleAnimation() {
     topDrawerController.value =
         TopDrawerState(Offset.zero, TopDrawerAnimationState.idle);

@@ -1,6 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:models/models.dart';
-import 'package:models/src/configuration/profile/profile.dart';
 
 part 'configuration.g.dart';
 

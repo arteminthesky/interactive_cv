@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart';
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -22,7 +23,11 @@ class CvThemeScope extends InheritedWidget {
 }
 
 class CvTheme extends StatefulWidget {
-  CvTheme({Key? key, required this.child, this.themes}) : super(key: key);
+  const CvTheme({
+    Key? key,
+    required this.child,
+    this.themes,
+  }) : super(key: key);
 
   final Widget child;
   final List<CvThemeData>? themes;
@@ -78,7 +83,7 @@ class _CvThemeState extends State<CvTheme> {
     if (_themes.isNotEmpty) {
       currentCvTheme = _themes[currentThemeIndex];
     }
-    _themes = widget.themes ?? [CvThemeData()];
+    _themes = widget.themes ?? [const CvThemeData()];
     if (currentCvTheme != null) {
       int index = _themes.indexOf(currentCvTheme);
       if (index != -1) {

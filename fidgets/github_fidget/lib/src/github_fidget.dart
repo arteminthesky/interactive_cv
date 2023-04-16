@@ -73,8 +73,7 @@ class _GithubFidgetState extends State<GithubFidget> {
                       if (state is StatsLoaded) {
                         return StatsView(stats: state.stats);
                       } else {
-                        print(state);
-                        return Offstage();
+                        return const Offstage();
                       }
                     },
                   ),
