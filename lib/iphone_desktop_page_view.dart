@@ -2,8 +2,6 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:interactive_cv/ui/widgets/important_apps_panel.dart';
-import 'package:interactive_cv/ui/widgets/top_drawer_scope.dart';
 import 'package:interactive_cv/ui/widgets/widgets.dart';
 import 'package:models/models.dart';
 
@@ -47,19 +45,26 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
   late List<Widget> desktops;
   var length = 0;
 
+  bool cancelTutorialAnimation = false;
+
   @override
   void initState() {
     super.initState();
     _prepareDesktops();
+
     // EXPERIMENTAL
     Future.delayed(const Duration(seconds: 3), () {
-      return _desktopsController.animateTo(_width * 0.8,
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.easeOutQuart);
+      if(!cancelTutorialAnimation) {
+        return _desktopsController.animateTo(_width * 0.8,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeOutQuart);
+      }
     }).then((value) {
-      return _desktopsController.animateTo(_width * 1.2,
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.easeOutQuart);
+      if(!cancelTutorialAnimation) {
+        return _desktopsController.animateTo(_width * 1.2,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeOutQuart);
+      }
     });
   }
 
@@ -116,206 +121,211 @@ class _IPhoneDesktopPageViewState extends State<IPhoneDesktopPageView> {
 
   @override
   Widget build(BuildContext context) {
-    return TopDrawerScope(
-      content: widget.topDrawer,
-      child: RepaintBoundary(
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          body: Stack(
-            clipBehavior: Clip.hardEdge,
-            children: [
-              IPhoneWallpaper(
-                wallpaper: widget.wallpaper,
-              ),
-              RepaintBoundary(
-                key: const ValueKey('main_pager_repaint_boundary'),
-                child: ScrollConfiguration(
-                  behavior: ScrollConfiguration.of(context).copyWith(
-                    dragDevices: {
-                      PointerDeviceKind.touch,
-                      PointerDeviceKind.mouse,
-                    },
+    return Listener(
+      onPointerDown: (pointer) {
+        cancelTutorialAnimation = true;
+      },
+      child: TopDrawerScope(
+        content: widget.topDrawer,
+        child: RepaintBoundary(
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: Stack(
+              clipBehavior: Clip.hardEdge,
+              children: [
+                IPhoneWallpaper(
+                  wallpaper: widget.wallpaper,
+                ),
+                RepaintBoundary(
+                  key: const ValueKey('main_pager_repaint_boundary'),
+                  child: ScrollConfiguration(
+                    behavior: ScrollConfiguration.of(context).copyWith(
+                      dragDevices: {
+                        PointerDeviceKind.touch,
+                        PointerDeviceKind.mouse,
+                      },
+                    ),
+                    child: AnimatedBuilder(
+                      animation: mainPagerListenable,
+                      builder: (context, snapshot) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 100),
+                          child: AnimatedBuilder(
+                            animation: _desktopsController,
+                            builder: (context, child) {
+                              return PageView.builder(
+                                itemCount: length,
+                                pageSnapping: _mainPageSnapping.value,
+                                physics: _mainPageScrollPhysicsEnabled.value
+                                    ? const ClampingScrollPhysics()
+                                    : const NeverScrollableScrollPhysics(),
+                                controller: _desktopsController,
+                                itemBuilder:
+                                    (BuildContext context, int position) {
+                                  Widget child = desktops[position];
+                                  var currentPageValue = 1.0;
+                                  var scale = 1.0;
+                                  var translationOffset = 0.0;
+                                  var scrollPosition =
+                                      _desktopsController.position;
+                                  if (!scrollPosition.hasPixels ||
+                                      scrollPosition.hasContentDimensions) {
+                                    currentPageValue =
+                                        _desktopsController.page ?? 1;
+                                  }
+
+                                  if (position == 1 && currentPageValue < 1) {
+                                    final pageFraction = 1 - currentPageValue;
+                                    translationOffset = _width * -pageFraction;
+                                    scale = 1 - (0.1 * pageFraction);
+                                  } else if (position == length - 2 &&
+                                      currentPageValue > length - 2) {
+                                    var pageFraction =
+                                        length - 2 - currentPageValue;
+                                    translationOffset = _width * -pageFraction;
+                                    scale = 1 - (0.1 * -pageFraction);
+                                  }
+
+                                  return Transform(
+                                    transform: createMatrix(
+                                      translationOffset,
+                                      scale,
+                                      screenCenter ?? Offset.zero,
+                                    ),
+                                    child: child,
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        );
+                      },
+                    ),
                   ),
+                ),
+                const ImportantAppsPanel(),
+                _DynamicBlur(
+                  controller: _desktopsController,
+                  desktopsCount: desktops.length,
+                ),
+                RepaintBoundary(
+                  key: const ValueKey('left_drawer_repaint_boundary'),
                   child: AnimatedBuilder(
-                    animation: mainPagerListenable,
-                    builder: (context, snapshot) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 100),
-                        child: AnimatedBuilder(
-                          animation: _desktopsController,
-                          builder: (context, child) {
-                            return PageView.builder(
-                              itemCount: length,
-                              pageSnapping: _mainPageSnapping.value,
-                              physics: _mainPageScrollPhysicsEnabled.value
-                                  ? const ClampingScrollPhysics()
-                                  : const NeverScrollableScrollPhysics(),
-                              controller: _desktopsController,
-                              itemBuilder:
-                                  (BuildContext context, int position) {
-                                Widget child = desktops[position];
-                                var currentPageValue = 1.0;
-                                var scale = 1.0;
-                                var translationOffset = 0.0;
-                                var scrollPosition =
-                                    _desktopsController.position;
-                                if (!scrollPosition.hasPixels ||
-                                    scrollPosition.hasContentDimensions) {
-                                  currentPageValue =
-                                      _desktopsController.page ?? 1;
-                                }
+                    animation: _desktopsController,
+                    builder: (context, child) {
+                      var translationOffset = _width;
+                      if (_desktopsController.positions.isNotEmpty) {
+                        var page = _desktopsController.page ?? 1;
+                        if (page >= 0 && page < 1) {
+                          translationOffset = _width * -page;
+                        }
+                      }
 
-                                if (position == 1 && currentPageValue < 1) {
-                                  final pageFraction = 1 - currentPageValue;
-                                  translationOffset = _width * -pageFraction;
-                                  scale = 1 - (0.1 * pageFraction);
-                                } else if (position == length - 2 &&
-                                    currentPageValue > length - 2) {
-                                  var pageFraction =
-                                      length - 2 - currentPageValue;
-                                  translationOffset = _width * -pageFraction;
-                                  scale = 1 - (0.1 * -pageFraction);
-                                }
-
-                                return Transform(
-                                  transform: createMatrix(
-                                    translationOffset,
-                                    scale,
-                                    screenCenter ?? Offset.zero,
-                                  ),
-                                  child: child,
-                                );
-                              },
-                            );
-                          },
-                        ),
+                      return Transform(
+                        transform: Matrix4.identity()
+                          ..translate(translationOffset),
+                        child: child,
                       );
                     },
+                    child: GestureDetector(
+                      supportedDevices: const {
+                        PointerDeviceKind.mouse,
+                        PointerDeviceKind.touch,
+                      },
+                      behavior: HitTestBehavior.opaque,
+                      onPanStart: (start) {
+                        leftDrawerStartPosition = start.globalPosition.dx;
+                        lockScroll();
+                      },
+                      onPanUpdate: (update) {
+                        leftDrawerCurrentPosition =
+                            leftDrawerStartPosition - update.globalPosition.dx;
+                        _desktopsController
+                            .jumpTo(max(0, leftDrawerCurrentPosition));
+                      },
+                      onPanDown: (details) {
+                        unlockScroll();
+                        leftDrawerCurrentPosition = 0;
+                      },
+                      onPanEnd: (details) {
+                        unlockScroll();
+                        var position = _desktopsController.position;
+                        if (position is ScrollPositionWithSingleContext) {
+                          position
+                              .goBallistic(-details.velocity.pixelsPerSecond.dx);
+                        }
+                        leftDrawerCurrentPosition = 0;
+                      },
+                      onPanCancel: () {
+                        unlockScroll();
+                        leftDrawerCurrentPosition = 0;
+                      },
+                      child: widget.leftDrawer,
+                    ),
                   ),
                 ),
-              ),
-              const ImportantAppsPanel(),
-              _DynamicBlur(
-                controller: _desktopsController,
-                desktopsCount: desktops.length,
-              ),
-              RepaintBoundary(
-                key: const ValueKey('left_drawer_repaint_boundary'),
-                child: AnimatedBuilder(
-                  animation: _desktopsController,
-                  builder: (context, child) {
-                    var translationOffset = _width;
-                    if (_desktopsController.positions.isNotEmpty) {
-                      var page = _desktopsController.page ?? 1;
-                      if (page >= 0 && page < 1) {
-                        translationOffset = _width * -page;
+                RepaintBoundary(
+                  key: const ValueKey('right_drawer_repaint_boundary'),
+                  child: AnimatedBuilder(
+                    animation: _desktopsController,
+                    builder: (context, child) {
+                      var translationOffset = _width;
+                      if (_desktopsController.positions.isNotEmpty) {
+                        var page = _desktopsController.page ?? 0;
+                        var pagesLength = desktops.length;
+                        if (page > pagesLength - 2 && page <= pagesLength - 1) {
+                          translationOffset = _width * (desktops.length - 1) -
+                              _desktopsController.offset;
+                        }
                       }
-                    }
+                      return Transform(
+                        transform: Matrix4.identity()
+                          ..translate(translationOffset),
+                        child: child,
+                      );
+                    },
+                    child: GestureDetector(
+                      supportedDevices: const {
+                        PointerDeviceKind.mouse,
+                        PointerDeviceKind.touch,
+                      },
+                      behavior: HitTestBehavior.opaque,
+                      onPanStart: (start) {
+                        rightDrawerStartPosition = start.globalPosition.dx;
+                        lockScroll();
+                      },
+                      onPanUpdate: (update) {
+                        var pagesLength = desktops.length;
 
-                    return Transform(
-                      transform: Matrix4.identity()
-                        ..translate(translationOffset),
-                      child: child,
-                    );
-                  },
-                  child: GestureDetector(
-                    supportedDevices: const {
-                      PointerDeviceKind.mouse,
-                      PointerDeviceKind.touch,
-                    },
-                    behavior: HitTestBehavior.opaque,
-                    onPanStart: (start) {
-                      leftDrawerStartPosition = start.globalPosition.dx;
-                      lockScroll();
-                    },
-                    onPanUpdate: (update) {
-                      leftDrawerCurrentPosition =
-                          leftDrawerStartPosition - update.globalPosition.dx;
-                      _desktopsController
-                          .jumpTo(max(0, leftDrawerCurrentPosition));
-                    },
-                    onPanDown: (details) {
-                      unlockScroll();
-                      leftDrawerCurrentPosition = 0;
-                    },
-                    onPanEnd: (details) {
-                      unlockScroll();
-                      var position = _desktopsController.position;
-                      if (position is ScrollPositionWithSingleContext) {
-                        position
-                            .goBallistic(-details.velocity.pixelsPerSecond.dx);
-                      }
-                      leftDrawerCurrentPosition = 0;
-                    },
-                    onPanCancel: () {
-                      unlockScroll();
-                      leftDrawerCurrentPosition = 0;
-                    },
-                    child: widget.leftDrawer,
+                        rightDrawerCurrentPosition =
+                            rightDrawerStartPosition - update.globalPosition.dx;
+                        var lastPageOffset = (pagesLength - 1) * _width;
+                        _desktopsController.jumpTo(min(lastPageOffset - 1,
+                            lastPageOffset + rightDrawerCurrentPosition));
+                      },
+                      onPanDown: (details) {
+                        unlockScroll();
+                        rightDrawerCurrentPosition = 0;
+                      },
+                      onPanEnd: (details) {
+                        unlockScroll();
+                        var position = _desktopsController.position;
+                        if (position is ScrollPositionWithSingleContext) {
+                          position
+                              .goBallistic(-details.velocity.pixelsPerSecond.dx);
+                        }
+                        rightDrawerCurrentPosition = 0;
+                      },
+                      onPanCancel: () {
+                        unlockScroll();
+                        rightDrawerCurrentPosition = 0;
+                      },
+                      child: widget.rightDrawer,
+                    ),
                   ),
                 ),
-              ),
-              RepaintBoundary(
-                key: const ValueKey('right_drawer_repaint_boundary'),
-                child: AnimatedBuilder(
-                  animation: _desktopsController,
-                  builder: (context, child) {
-                    var translationOffset = _width;
-                    if (_desktopsController.positions.isNotEmpty) {
-                      var page = _desktopsController.page ?? 0;
-                      var pagesLength = desktops.length;
-                      if (page > pagesLength - 2 && page <= pagesLength - 1) {
-                        translationOffset = _width * (desktops.length - 1) -
-                            _desktopsController.offset;
-                      }
-                    }
-                    return Transform(
-                      transform: Matrix4.identity()
-                        ..translate(translationOffset),
-                      child: child,
-                    );
-                  },
-                  child: GestureDetector(
-                    supportedDevices: const {
-                      PointerDeviceKind.mouse,
-                      PointerDeviceKind.touch,
-                    },
-                    behavior: HitTestBehavior.opaque,
-                    onPanStart: (start) {
-                      rightDrawerStartPosition = start.globalPosition.dx;
-                      lockScroll();
-                    },
-                    onPanUpdate: (update) {
-                      var pagesLength = desktops.length;
-
-                      rightDrawerCurrentPosition =
-                          rightDrawerStartPosition - update.globalPosition.dx;
-                      var lastPageOffset = (pagesLength - 1) * _width;
-                      _desktopsController.jumpTo(min(lastPageOffset - 1,
-                          lastPageOffset + rightDrawerCurrentPosition));
-                    },
-                    onPanDown: (details) {
-                      unlockScroll();
-                      rightDrawerCurrentPosition = 0;
-                    },
-                    onPanEnd: (details) {
-                      unlockScroll();
-                      var position = _desktopsController.position;
-                      if (position is ScrollPositionWithSingleContext) {
-                        position
-                            .goBallistic(-details.velocity.pixelsPerSecond.dx);
-                      }
-                      rightDrawerCurrentPosition = 0;
-                    },
-                    onPanCancel: () {
-                      unlockScroll();
-                      rightDrawerCurrentPosition = 0;
-                    },
-                    child: widget.rightDrawer,
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

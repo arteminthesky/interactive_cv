@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:interactive_cv/ui/widgets/widgets.dart';
+part of widgets;
 
 class ImportantAppsPanel extends StatelessWidget {
   const ImportantAppsPanel({Key? key}) : super(key: key);

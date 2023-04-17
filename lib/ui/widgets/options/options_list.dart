@@ -1,7 +1,5 @@
-import 'package:app_base/app_base.dart';
-import 'package:figma_squircle/figma_squircle.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:interactive_cv/ui/widgets/options/option_item.dart';
+part of options;
+
 
 const _kDividerColor = CupertinoDynamicColor.withBrightness(
   color: Color(0xFFA9A9AF),

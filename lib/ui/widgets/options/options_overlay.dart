@@ -1,8 +1,4 @@
-import 'dart:ui';
-
-import 'package:app_base/app_base.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:interactive_cv/ui/widgets/options/options_list.dart';
+part of options;
 
 const _kAppIconMaxScale = 0.2;
 

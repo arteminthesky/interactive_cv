@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:interactive_cv/ui/widgets/base/base.dart';
-import 'package:platform_utils/platform_utils.dart' as platform;
+part of widgets;
 
 class TopDrawerScope extends StatelessWidget {
   const TopDrawerScope({

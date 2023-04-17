@@ -1,5 +1,4 @@
-import 'package:app_base/app_base.dart';
-import 'package:flutter/cupertino.dart';
+part of options;
 
 class OptionItem extends StatelessWidget {
   const OptionItem({

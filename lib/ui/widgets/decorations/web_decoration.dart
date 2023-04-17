@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
-import 'package:interactive_cv/ui/widgets/background.dart';
 import 'package:interactive_cv/ui/widgets/decorations/decorations.dart';
+import 'package:interactive_cv/ui/widgets/widgets.dart';
 
 class WebDecoration extends StatelessWidget {
   const WebDecoration({Key? key, required this.appBuilder}) : super(key: key);
